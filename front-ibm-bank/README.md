@@ -1,27 +1,55 @@
-# FrontIbmBank
+# Front-End of the IBM Challenge Project
+
+## Description
+
+This is the front-end project for the IBM Bank Challenge. The goal of this project is to provide an interactive user interface for the banking system, allowing users to perform operations such as transfers, deposits, and balance inquiries.
+
+![alt text](src/assets/bank_1.png)
+
+## Technologies Used
+
+- Angular
+- Angular Material
+- TypeScript
+- HTML
+- CSS
+
+## Prerequisites
+
+Before starting, make sure you have Node.js installed on your machine. You can download Node.js [here](https://nodejs.org/).
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.3.
 
-## Development server
+## Installation
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+1. Clone the repository:
 
-## Code scaffolding
+```bash
+   git clone https://github.com/maxfortune93/ibm-_bank_challenge.git
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+   cd ibm-_bank_challenge/front
+```
 
-## Build
+2. Install the dependencies:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+ npm install
+```
 
-## Running unit tests
+## Running the Project
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
 
-## Running end-to-end tests
+```bash
+ ng serve
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+To run the project on a development server and connect it to the back-end, use the following command:
 
-## Further help
+```bash
+ npm start
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Contributions
+Contributions are welcome! If you have any suggestions, improvements, or feedback about the project, feel free to share them. Your input is valuable and will help enhance the project.
+
