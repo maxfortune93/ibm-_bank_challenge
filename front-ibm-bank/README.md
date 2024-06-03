@@ -27,7 +27,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ```bash
    git clone https://github.com/maxfortune93/ibm-_bank_challenge.git
 
-   cd ibm-_bank_challenge/front
+   cd front-ibm-bank
 ```
 
 2. Install the dependencies:
