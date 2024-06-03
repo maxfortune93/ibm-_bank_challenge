@@ -1,0 +1,15 @@
+.full-width {
+  width: 100%;
+  border-radius: 50px !important;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 25px;
+  margin-top: 16px;
+}
+
+.button-class{
+  min-width: 120px;
+}

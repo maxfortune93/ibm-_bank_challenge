@@ -1,0 +1,72 @@
+/* You can add global styles to this file, and also import other style files */
+
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+
+.mat-mdc-snack-bar-container {
+  &.red-snackbar {
+    --mdc-snackbar-container-color: #f32121;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+
+  &.green-snackbar {
+    --mdc-snackbar-container-color: #61DDA0;
+    --mat-mdc-snack-bar-button-color: #303030;
+    --mdc-snackbar-supporting-text-color: #303030;
+  }
+}
+
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
+
+// /* Change the border width */
+// .mdc-text-field--outlined:not(.mdc-text-field--disabled)
+//   .mdc-notched-outline
+//   .mdc-notched-outline__leading,
+// .mdc-text-field--outlined:not(.mdc-text-field--disabled)
+//   .mdc-notched-outline
+//   .mdc-notched-outline__notch,
+// .mdc-text-field--outlined:not(.mdc-text-field--disabled)
+//   .mdc-notched-outline
+//   .mdc-notched-outline__trailing {
+//   border-width: 1.5px !important;
+// }
+
+// /* Change the border focused color */
+// .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused
+//   .mdc-notched-outline__leading,
+// .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused
+//   .mdc-notched-outline__notch,
+// .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused
+//   .mdc-notched-outline__trailing {
+//   border-color: #61DDA0 !important;
+// }
+
+// /* Change the border hover color */
+// .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover
+//   .mdc-notched-outline
+//   .mdc-notched-outline__leading,
+// .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover
+//   .mdc-notched-outline
+//   .mdc-notched-outline__notch,
+// .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover
+//   .mdc-notched-outline
+//   .mdc-notched-outline__trailing {
+//   border-color: #61DDA0 !important;
+// }
+

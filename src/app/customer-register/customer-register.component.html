@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>Cadastro de Cliente</h2>
+<mat-dialog-content>
+  <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Age</mat-label>
+      <input matInput formControlName="age" type="number" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Bank Name</mat-label>
+      <mat-select formControlName="bank" required>
+        <mat-option *ngFor="let bank of banks" [value]="bank.name">{{ bank.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Branch Number</mat-label>
+      <input matInput formControlName="branchNumber" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Account Number</mat-label>
+      <input matInput formControlName="accountNumber" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Digit</mat-label>
+      <input matInput formControlName="digit" required>
+    </mat-form-field>
+    <div class="actions">
+      <button class="button-class" color="warn" mat-button mat-dialog-close>Cancelar</button>
+      <button class="button-class" style="background-color: #008080;" mat-button type="submit" [disabled]="!customerForm.valid">Salvar</button>
+    </div>
+  </form>
+</mat-dialog-content>

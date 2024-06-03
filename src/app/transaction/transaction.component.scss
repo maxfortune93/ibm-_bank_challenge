@@ -1,0 +1,46 @@
+.form-group {
+  margin-bottom: 15px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+
+.div-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 70px;
+}
+
+.card-header{
+  font-size: xx-large;
+  font-weight: 500;
+}
+
+.add-button{
+  background-color: #008080 !important;
+}
+
+.div-name-field{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.button-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.button-class{
+  min-width: 150px;
+}

@@ -1,0 +1,28 @@
+<mat-toolbar>
+  <button mat-icon-button  (click)="myDrawer.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="toolbar-spacer"></span>
+  IBM Bank Challenge
+</mat-toolbar>
+
+<mat-drawer-container >
+  <mat-drawer #myDrawer class="drawer" opened="true" position="start" mode="side">
+    <mat-list>
+      <mat-list-item class="menu-button" [routerLink]="'customer'">
+        <mat-icon class="icon" matListItemIcon>group</mat-icon>
+        <span >Clientes</span>
+      </mat-list-item>
+      <mat-list-item class="menu-button" [routerLink]="'transaction'">
+        <mat-icon class="icon" matListItemIcon>payments</mat-icon>
+        <span >Depositar/Transferir</span>
+      </mat-list-item>
+    </mat-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -1,0 +1,11 @@
+<div class="search-filter">
+  <input
+    type="text"
+    [(ngModel)]="searchTerm"
+    (input)="onSearchChange()"
+    placeholder="Buscar por nome ou email"
+  />
+  <span class="search-icon">
+    <i class="material-icons">search</i>
+  </span>
+</div>
