@@ -1,0 +1,37 @@
+.div-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-header{
+  font-size: xx-large;
+  font-weight: 500;
+}
+
+.add-button{
+  background-color: #008080 !important;
+}
+
+.add-button-menu{
+  background-color: #008080 !important;
+}
+
+.mat-mdc-button, .mdc-button__label, .mat-mdc-unelevated-button, .mdc-button__label{
+  font-size: smaller !important;
+}
+
+.div-content{
+  margin-top: 50px;
+}
+
+
+.mat-column-actions {
+  width: 20px;
+  text-align: right;
+}
+
+.mat-mdc-cell{
+ color:  #f1f1f1;
+}
+

@@ -1,0 +1,16 @@
+
+<mat-card class="container">
+  <span>{{ transaction.timestamp! | date: 'dd/MM/yyyy' }}</span>
+  <span [ngStyle]="{'color': transactionTypeColor}"> {{ transactionTypeLabel | uppercase }}</span>
+  <span *ngIf="transaction.transactionType === 'TRANSFER'; else nonTransfer" class="transaction-details">
+    <span>{{ formatNumberWithHyphen(transaction.senderAccountNumber) }}</span>
+    <span class="arrow">↓</span>
+    <span>{{ formatNumberWithHyphen(transaction.receiverAccountNumber) }}</span>
+  </span>
+  <ng-template #nonTransfer>
+    <span>{{ formatNumberWithHyphen(transaction.receiverAccountNumber) || '-' }}</span>
+  </ng-template>
+  <span [ngStyle]="{'color': transactionTypeColor}">{{ transactionAmount }}</span>
+  <span>{{ transaction.timestamp! | date: 'HH:mm:ss' }}</span>
+</mat-card>
+

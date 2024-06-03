@@ -1,0 +1,40 @@
+
+<mat-toolbar style="background-color: #008080;">
+  <span>{{ customer.name }}</span>
+  <span class="spacer"></span>
+  <span>Saldo: {{ customer.balance |  currency:'BRL':'symbol':'1.2-2' }}</span>
+</mat-toolbar>
+
+<div class="customer-info">
+  <mat-card>
+    <mat-card-content class="customer-info-content">
+      <div>
+        <p ><span class="title">Nome :</span> {{ customer.name }}</p>
+        <p ><span class="title">Idade :</span> {{ customer.age }}</p>
+        <p ><span class="title">Email :</span> {{ customer.email }}</p>
+      </div>
+      <div>
+        <p ><span class="title">Banco :</span> {{ customer.bankName }}</p>
+        <p ><span class="title">Agência :</span> {{ customer.branch }}</p>
+        <p ><span class="title">Número da Conta :</span> {{ formatNumberWithHyphen(customer.accountNumber) }}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+<div *ngIf="transactions.length > 0">
+  <h2>Extrato Bancário</h2>
+  <div *ngFor="let transaction of transactions">
+    <app-custom-transaction-item [transaction]="transaction" [currentCustomerId]="customer.id!"></app-custom-transaction-item>
+  </div>
+
+  <mat-paginator [length]="totalElements"
+                 [pageSize]="size"
+                 [pageSizeOptions]="[5, 10]"
+                 (page)="onPageChange($event)">
+  </mat-paginator>
+</div>
+<mat-card style="text-align: center;">
+  <div *ngIf="transactions.length === 0">
+    <p>Nenhuma transação encontrada.</p>
+  </div>
+</mat-card>

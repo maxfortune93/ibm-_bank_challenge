@@ -1,0 +1,24 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.customer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 10px;
+}
+
+.customer-info-content{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.transactions-card {
+  margin-top: 20px;
+}
+
+.title{
+ color: #888;
+}

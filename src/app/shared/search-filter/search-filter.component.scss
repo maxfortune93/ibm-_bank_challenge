@@ -1,0 +1,28 @@
+.search-filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-filter input[type="text"] {
+  width: 100%;
+  padding: 10px 40px 10px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #333;
+}
+
+.search-filter .search-icon {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.search-filter .search-icon .material-icons {
+  color: #aaa;
+}
