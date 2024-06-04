@@ -35,3 +35,67 @@
  color:  #f1f1f1;
 }
 
+.search-filter{
+  margin-bottom: 10px;
+}
+
+
+// card styles
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #333;
+}
+
+.transaction-details span {
+  margin: 0 10px;
+}
+
+.transaction-type {
+  font-weight: bold;
+}
+
+.transaction-amount {
+  font-weight: bold;
+}
+
+.container{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:10px;
+  padding: 20px;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  justify-items: center;
+  align-items: center;
+
+  span{
+    font-size: small;
+  }
+}
+
+.transaction-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.arrow {
+  font-size: 20px;
+  margin: 5px 0;
+}
+
+
+.clickable-card{
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.clickable-card:hover {
+  background-color: #666;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

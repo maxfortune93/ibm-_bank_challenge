@@ -22,3 +22,26 @@
 .title{
  color: #888;
 }
+
+.back-button{
+  margin-bottom: 10px;
+  &:hover {
+    background-color: #7b1fa2 !important;
+  }
+}
+
+
+.header-filter-form{
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.filter-form{
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: space-between;
+  align-items: baseline;
+}
+

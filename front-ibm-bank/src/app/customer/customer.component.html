@@ -2,7 +2,6 @@
   <mat-card-header class="card-header">
     <mat-card-title>Clientes</mat-card-title>
   </mat-card-header>
-  <app-search-filter (searchChanged)="onSearchChanged($event)"></app-search-filter>
   <button mat-flat-button class="add-button" (click)="openRegisterModal()">
     <mat-icon>add</mat-icon>
     Cadastrar
@@ -10,43 +9,28 @@
 </div>
 
 <div class="div-content">
-  <table mat-table [dataSource]="customers" class="mat-elevation-z8">
+  <div class="search-filter">
+    <app-search-filter  (searchChanged)="onSearchChanged($event)"></app-search-filter>
+  </div>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Nome </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Email </th>
-      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="bankName">
-      <th mat-header-cell *matHeaderCellDef>Banco/Agencia </th>
-      <td mat-cell *matCellDef="let element">
-            {{element.bankName}} - {{element.branch}}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="accountNumber">
-      <th mat-header-cell *matHeaderCellDef> N° Conta </th>
-      <td mat-cell *matCellDef="let element"> {{formatNumberWithHyphen(element.accountNumber)}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-flat-button class="add-button-menu" (click)="viewCustomerDetails(element.id)">
-          Detalhe
-        </button>
-
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+  <mat-card class="container">
+    <span>Nome</span>
+    <span>Email</span>
+    <span>Banco/Agencia</span>
+    <span>N° Conta</span>
+  </mat-card>
+  <div *ngFor="let customer of customers" class="customer-card ">
+    <mat-card class="container clickable-card"  (click)="viewCustomerDetails(customer.id!)">
+      <span>{{ customer.name }}</span>
+      <span > {{ customer.email }}</span>
+      <span class="transaction-details">
+        <span>{{ customer.bankName }}</span>
+        <!-- <span class="arrow">↓</span> -->
+        <span>{{ customer.branch }}</span>
+      </span>
+      <span >{{ formatNumberWithHyphen(customer.accountNumber) }}</span>
+    </mat-card>
+  </div>
     <mat-paginator
     style="margin-top: 10px;"
     [length]="totalElements"

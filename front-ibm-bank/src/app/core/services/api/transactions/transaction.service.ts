@@ -17,11 +17,18 @@ export class TransactionService {
   }
 
 
-  getTransactionsByCustomerId(customerId: string, page: number, size: number, sort: string): Observable<Page<Transaction>> {
+  getTransactionsByCustomerId(customerId: string, page: number, size: number, sort: string, month?: number, year?: number): Observable<Page<Transaction>> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
       .set('sort', sort);
+      if (month) {
+        params = params.set('month', month.toString());
+      }
+
+      if (year) {
+        params = params.set('year', year.toString());
+      }
     return this.http.get<Page<Transaction>>(`${this.apiUrl}/${customerId}`, { params });
   }
 }
