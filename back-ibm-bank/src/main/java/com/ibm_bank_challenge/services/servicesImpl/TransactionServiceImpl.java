@@ -86,7 +86,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         Page<Transaction> transactions = transactionRepository.findBySenderIdOrReceiverId(customerId, customerId, pageable);
-        
+
         return transactions.map(this::convertToResponseDTO);
     }
 
