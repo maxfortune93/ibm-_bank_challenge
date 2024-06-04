@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { startWith, Observable, switchMap, tap } from 'rxjs';
+import { startWith, Observable, switchMap, tap, combineLatest, map } from 'rxjs';
 import { Customer } from '../core/models/customer.model';
 import { TransactionDTO } from '../core/models/transaction.model';
 import { CustomerService } from '../core/services/api/customers/customer.service';
@@ -41,15 +41,18 @@ export class TransactionComponent {
   }
 
   ngOnInit(): void {
-    this.filteredCustomers$ = this.transactionForm.get('customerName')?.valueChanges.pipe(
-      startWith(''),
+    const customerName$ = this.transactionForm.get('customerName')?.valueChanges.pipe(startWith(''))!;
+    const recipientName$ = this.transactionForm.get('recipientName')?.valueChanges.pipe(startWith(''))!;
+
+    this.filteredCustomers$ = customerName$.pipe(
       switchMap(value => this._filterCustomers(value || '')),
       tap(customers => this.customers = customers)
     );
 
-    this.filteredRecipients$ = this.transactionForm.get('recipientName')?.valueChanges.pipe(
-      startWith(''),
-      switchMap(value => this._filterCustomers(value || '')),
+    this.filteredRecipients$ = combineLatest([recipientName$, customerName$]).pipe(
+      switchMap(([recipientName, customerName]) => this._filterCustomers(recipientName || '').pipe(
+        map(recipients => recipients.filter(v => v.name !== customerName))
+      )),
       tap(recipients => this.recipients = recipients)
     );
   }
