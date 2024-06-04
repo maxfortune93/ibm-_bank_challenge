@@ -37,7 +37,9 @@ public class TransactionController {
     @GetMapping("/{customerId}")
     public Page<TransactionResponseDTO> getTransactionsByCustomerId(
             @PathVariable UUID customerId,
-            Pageable pageable) {
-        return transactionService.getTransactionsByCustomerId(customerId, pageable);
+            Pageable pageable,
+            @RequestParam(required = false) Integer month,
+            @RequestParam(required = false) Integer year) {
+        return transactionService.getTransactionsByCustomerId(customerId, pageable,  month, year);
     }
 }

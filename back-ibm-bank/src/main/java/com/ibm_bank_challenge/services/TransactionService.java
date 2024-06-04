@@ -12,5 +12,5 @@ public interface TransactionService {
     void saveTransaction(TransactionDTO transactionDTO) throws Exception;
     List<TransactionResponseDTO> getTransactionsById(UUID customerId);
 
-    Page<TransactionResponseDTO> getTransactionsByCustomerId(UUID customerId, Pageable pageable);
+    Page<TransactionResponseDTO> getTransactionsByCustomerId(UUID customerId, Pageable pageable,Integer month, Integer year);
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -73,9 +74,20 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Page<TransactionResponseDTO> getTransactionsByCustomerId(UUID customerId, Pageable pageable) {
-        return transactionRepository.findBySenderIdOrReceiverId(customerId, customerId, pageable)
-                .map(this::convertToResponseDTO);
+    public Page<TransactionResponseDTO> getTransactionsByCustomerId(UUID customerId, Pageable pageable, Integer month, Integer year) {
+        if (month != null && year != null) {
+            YearMonth yearMonth = YearMonth.of(year, month);
+            LocalDateTime startDate = yearMonth.atDay(1).atStartOfDay();
+            LocalDateTime endDate = yearMonth.atEndOfMonth().atTime(23, 59, 59);
+
+            Page<Transaction> transactions = transactionRepository.findBySenderIdOrReceiverIdAndTimestampBetween(customerId, startDate, endDate, pageable);
+
+            return transactions.map(this::convertToResponseDTO);
+        }
+
+        Page<Transaction> transactions = transactionRepository.findBySenderIdOrReceiverId(customerId, customerId, pageable);
+        
+        return transactions.map(this::convertToResponseDTO);
     }
 
     private TransactionResponseDTO convertToResponseDTO(Transaction transaction) {
