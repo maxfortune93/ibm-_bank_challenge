@@ -10,7 +10,8 @@ This project is a sample application for managing banking transactions. It was d
 - Java 17
 - Spring Boot
 - *Spring Data JPA*
-- *H2 Database*
+- *H2 Database* (for development)
+- *PostgreSQL* (for dev-local environment)
 
 
 ## Features
@@ -41,22 +42,31 @@ Before you begin, ensure you have the following tools installed on your machine:
 
 ### Step 2: Configure the Database
 
-The project is configured to use H2 as an in-memory database. There is no need to manually configure the database, as it will be created automatically when the application starts.
+- FOR H2 Database: No additional configuration is needed as H2 is in-memory and auto-configured.
 
+- For PostgreSQL: Ensure that PostgreSQL is installed and configured properly. Update the application-dev-local.properties with your PostgreSQL settings.
 ### Step 3: Run the Application
 
-You can run the application using Maven:
+You can run the application using Maven. Specify the profile with the -Dspring.profiles.active flag:
 
-bash
-mvn spring-boot:run
+For development using H2:
 
+```bash
+mvn spring-boot:run -Dspring.profiles.active=dev
+```
+For local development using PostgreSQL:
+
+```bash
+mvn spring-boot:run -Dspring.profiles.active=dev-local
+```
 
 Or you can build the project and run the generated JAR file:
 
-bash
+```bash
 mvn clean package
-java -jar target/your-project.jar
-
+java -jar -Dspring.profiles.active=dev target/your-project.jar
+java -jar -Dspring.profiles.active=dev-local target/your-project.jar
+```
 
 ### Step 4: Access the Application
 

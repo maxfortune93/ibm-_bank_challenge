@@ -60,6 +60,30 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<spring.profile>dev</spring.profile>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>dev-local</id>
+			<properties>
+				<spring.profiles.active>dev-local</spring.profiles.active>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<spring.profile>prod</spring.profile>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>
