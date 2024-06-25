@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerRegisterComponent } from '../customer-register/customer-register.component';
 import { Router } from '@angular/router';
@@ -36,11 +36,15 @@ export class CustomerComponent {
   page: number = 0;
   searchTerm: string = '';
 
+  public applyTooltip: boolean = true;
+
   constructor(
     private dialog: MatDialog,
     private router: Router,
     private customerService: CustomerService
-  ) {}
+  ) {
+    this.applyTooltip = window.innerWidth > 768;
+  }
 
   ngOnInit(): void {
     this.loadCustomers();
@@ -78,6 +82,11 @@ export class CustomerComponent {
 
   viewCustomerDetails(customerId: string): void {
     this.router.navigate(['/customers', customerId]);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: { target: { innerWidth: number; }; }) {
+    this.applyTooltip = event.target.innerWidth > 768;
   }
 
 }

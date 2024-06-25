@@ -13,6 +13,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 20px;
 }
 
 .transactions-card {
@@ -30,18 +31,96 @@
   }
 }
 
-
 .header-filter-form{
-display: flex;
-justify-content: space-between;
-align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .filter-form{
   display: flex;
   flex-direction: row;
   gap: 15px;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: baseline;
+  width: auto;
+  padding: 10px;
+}
+
+.filter-div-form{
+  width: 55%;
+}
+
+.mat-mdc-form-field {
+  min-width: 40px;
+}
+
+.filter-button, .filter-mat-form{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .header-filter-form {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-div-form {
+    width: 100%;
+    flex-direction: row;
+  }
+
+  .mat-mdc-form-field, .filter-mat-form {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .filter-button {
+    width: auto;
+  }
+
+}
+
+@media (max-width: 499px) {
+
+  .mat-mdc-form-field, .filter-mat-form {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .filter-form{
+    padding: 0;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
+   .filter-button{
+    justify-content: center;
+    margin-bottom: 12px;
+    margin-top: -25px;
+  }
+
+}
+
+@media (max-width: 380px) {
+
+  .toolbar-header{
+    display: flex;
+    flex-direction: column-reverse;
+    height: 65px;
+
+  }
+}
+
+@media (max-width: 485px) {
+
+  .customer-info-content{
+    flex-direction: column;
+    gap: 5px;
+  }
 }
 

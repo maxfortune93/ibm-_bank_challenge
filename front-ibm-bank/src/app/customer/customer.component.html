@@ -15,14 +15,14 @@
 
   <mat-card class="container">
     <span>Nome</span>
-    <span>Email</span>
+    <span class="applyTooltip">Email</span>
     <span>Banco/Agencia</span>
     <span>N° Conta</span>
   </mat-card>
   <div *ngFor="let customer of customers" class="customer-card ">
     <mat-card class="container clickable-card"  (click)="viewCustomerDetails(customer.id!)">
       <span>{{ customer.name }}</span>
-      <span > {{ customer.email }}</span>
+      <span [matTooltip]="applyTooltip ? customer.email : '' " matTooltipPosition="below" class="applyTooltip"> {{ customer.email }}</span>
       <span class="transaction-details">
         <span>{{ customer.bankName }}</span>
         <!-- <span class="arrow">↓</span> -->

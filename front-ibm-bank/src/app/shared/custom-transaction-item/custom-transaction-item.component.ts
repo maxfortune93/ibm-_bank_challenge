@@ -1,12 +1,16 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 import { Transaction } from 'src/app/core/models/transaction.model';
 import { formatNumberWithHyphen } from '../utils/formater-utils';
 import { TransactionType } from '../enum/transaction-type.enum';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-custom-transaction-item',
   templateUrl: './custom-transaction-item.component.html',
-  styleUrl: './custom-transaction-item.component.scss'
+  styleUrl: './custom-transaction-item.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomTransactionItemComponent {
   formatNumberWithHyphen = formatNumberWithHyphen;
@@ -16,8 +20,15 @@ export class CustomTransactionItemComponent {
   transactionTypeColor!: string;
   transactionAmount!: string;
   transactionTypeLabel: string = '';
+  readonly panelOpenState = signal(false);
+  isSmallScreen$!: Observable<boolean>;
 
-  constructor() {}
+  constructor(private breakpointObserver: BreakpointObserver) {
+    this.isSmallScreen$ = this.breakpointObserver.observe(['(max-width: 768px)'])
+      .pipe(
+        map(result => result.matches)
+      );
+  }
 
   ngOnInit(): void {
     this.setTransactionDetails();
@@ -72,5 +83,9 @@ export class CustomTransactionItemComponent {
         this.transactionTypeColor = '#000000';
         this.transactionAmount = `R$ ${this.transaction.amount.toFixed(2)}`;
     }
+  }
+
+  isSmallScreen(): boolean {
+    return this.breakpointObserver.isMatched('(max-width: 668px)');
   }
 }

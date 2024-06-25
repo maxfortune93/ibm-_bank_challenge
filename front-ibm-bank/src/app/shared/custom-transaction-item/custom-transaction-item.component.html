@@ -1,16 +1,61 @@
 
-<mat-card class="container">
-  <span>{{ transaction.timestamp! | date: 'dd/MM/yyyy' }}</span>
-  <span [ngStyle]="{'color': transactionTypeColor}"> {{ transactionTypeLabel | uppercase }}</span>
-  <span *ngIf="transaction.transactionType === 'TRANSFER'; else nonTransfer" class="transaction-details">
-    <span>{{ formatNumberWithHyphen(transaction.senderAccountNumber) }}</span>
-    <span class="arrow">↓</span>
-    <span>{{ formatNumberWithHyphen(transaction.receiverAccountNumber) }}</span>
-  </span>
-  <ng-template #nonTransfer>
-    <span>{{ formatNumberWithHyphen(transaction.receiverAccountNumber) || '-' }}</span>
-  </ng-template>
-  <span [ngStyle]="{'color': transactionTypeColor}">{{ transactionAmount }}</span>
-  <span>{{ transaction.timestamp! | date: 'HH:mm:ss' }}</span>
-</mat-card>
+<mat-accordion *ngIf="isSmallScreen$ | async; else largeScreenContent" >
+  <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)" style="margin-bottom: 10px;">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span>{{ transaction.timestamp! | date: 'dd/MM/yyyy' }}</span>
+      </mat-panel-title>
+      <mat-panel-description>
+        <span [ngStyle]="{'color': transactionTypeColor}"> {{ transactionTypeLabel | uppercase }}</span>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="container-div">
+      <span>
+        <mat-panel-title>
+          Data
+        </mat-panel-title>
+        <span>
+          {{ transaction.timestamp! | date: 'HH:mm:ss' }}
+        </span>
+      </span>
+      <span style=" display: flex; align-items: center; flex-direction: column;">
+        <mat-panel-title>
+          Detalhes
+        </mat-panel-title>
+        <span *ngIf="transaction.transactionType === 'TRANSFER'; else nonTransfer" class="transaction-details">
+          <span>{{ formatNumberWithHyphen(transaction.senderAccountNumber) }}</span>
+          <!-- <span class="arrow">→</span> -->
+          <span class="arrow">↓</span>
+          <span>{{ formatNumberWithHyphen(transaction.receiverAccountNumber) }}</span>
+        </span>
+        <ng-template #nonTransfer>
+          <span>{{ formatNumberWithHyphen(transaction.receiverAccountNumber) || '-' }}</span>
+        </ng-template>
+      </span>
+      <span>
+        <mat-panel-title>
+          Valor
+        </mat-panel-title>
+        <span [ngStyle]="{'color': transactionTypeColor}">{{ transactionAmount }}</span>
+      </span>
 
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<ng-template #largeScreenContent>
+  <mat-card class="container">
+    <span>{{ transaction.timestamp! | date: 'dd/MM/yyyy' }}</span>
+    <span [ngStyle]="{'color': transactionTypeColor}"> {{ transactionTypeLabel | uppercase }}</span>
+    <span *ngIf="transaction.transactionType === 'TRANSFER'; else nonTransfer" class="transaction-details">
+      <span>{{ formatNumberWithHyphen(transaction.senderAccountNumber) }}</span>
+      <span class="arrow">↓</span>
+      <span>{{ formatNumberWithHyphen(transaction.receiverAccountNumber) }}</span>
+    </span>
+    <ng-template #nonTransfer>
+      <span>{{ formatNumberWithHyphen(transaction.receiverAccountNumber) || '-' }}</span>
+    </ng-template>
+    <span [ngStyle]="{'color': transactionTypeColor}">{{ transactionAmount }}</span>
+    <span>{{ transaction.timestamp! | date: 'HH:mm:ss' }}</span>
+  </mat-card>
+</ng-template>

@@ -16,3 +16,19 @@
 
 }
 
+.menu-button{
+  margin-bottom: 10px;
+  &:hover{
+    background-color: #008082;
+  }
+}
+
+.menu-button.active {
+  background-color: #008080;
+  color: white;
+}
+
+::ng-deep .mat-drawer-shown {
+  visibility: visible;
+  background-color: rgba(0, 0, 0, 0.5)!important;
+}

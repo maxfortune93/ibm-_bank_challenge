@@ -8,13 +8,13 @@
 </mat-toolbar>
 
 <mat-drawer-container >
-  <mat-drawer #myDrawer class="drawer" opened="true" position="start" mode="side">
+  <mat-drawer #myDrawer class="drawer" opened="false" position="start" mode="over">
     <mat-list>
-      <mat-list-item class="menu-button" [routerLink]="'customer'">
+      <mat-list-item class="menu-button" [routerLink]="'customer'" routerLinkActive="active" (click)="myDrawer.toggle()">
         <mat-icon class="icon" matListItemIcon>group</mat-icon>
         <span >Clientes</span>
       </mat-list-item>
-      <mat-list-item class="menu-button" [routerLink]="'transaction'">
+      <mat-list-item class="menu-button" [routerLink]="'transaction'" routerLinkActive="active" (click)="myDrawer.toggle()">
         <mat-icon class="icon" matListItemIcon>payments</mat-icon>
         <span >Depositar/Transferir</span>
       </mat-list-item>

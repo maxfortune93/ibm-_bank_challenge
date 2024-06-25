@@ -44,3 +44,31 @@
   font-size: 20px;
   margin: 5px 0;
 }
+
+.container-div{
+  display: grid;
+  grid-template-columns: 1fr 1.8fr 1fr;
+  gap:10px;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  justify-items: center;
+  transaction-details-mobile
+
+  span{
+    font-size: small;
+  }
+}
+
+.transaction-details-mobile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+mat-panel-title{
+  span{
+    font-size: small;
+  }
+}
