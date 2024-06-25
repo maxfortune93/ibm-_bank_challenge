@@ -10,11 +10,12 @@ COPY . .
 
 RUN apt-get install maven -y
 RUN mvn clean install
+RUN ls -la /app/target/
 
 FROM openjdk:17-jdk-slim
 
 EXPOSE 8080
 
-COPY --from=build /app/target/deploy_render-1.0.0.jar app.jar
+COPY --from=build /app/target/ibm-bank-challenge-1.0.0.jar app.jar
 
 ENTRYPOINT [ "java", "-jar", "app.jar" ]
