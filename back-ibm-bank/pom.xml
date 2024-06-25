@@ -85,7 +85,7 @@
 	</profiles>
 
 	<build>
-		<finalName>deploy_render-1.0.0</finalName>
+		<finalName>ibm-bank-challenge-1.0.0</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
