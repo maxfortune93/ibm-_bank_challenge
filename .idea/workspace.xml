@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="415432bf-73f9-4801-a9a1-3b816b547a94" name="Changes" comment="create Customer and transaction repository">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-ibm-bank/src/environments/environment.prod.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-ibm-bank/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-ibm-bank/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-ibm-bank/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-ibm-bank/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-ibm-bank/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-ibm-bank/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +81,7 @@
       <option name="presentableId" value="Default" />
       <updated>1717209886735</updated>
       <workItem from="1717209887990" duration="50930000" />
-      <workItem from="1719355227325" duration="1714000" />
+      <workItem from="1719355227325" duration="2369000" />
     </task>
     <task id="LOCAL-00001" summary="initial config">
       <created>1717210661588</created>

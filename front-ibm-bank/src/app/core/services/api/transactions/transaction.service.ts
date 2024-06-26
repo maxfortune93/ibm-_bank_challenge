@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Transaction, TransactionDTO } from '../../../models/transaction.model';
 import { Page } from 'src/app/core/models/page.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
-  private apiUrl = 'api/transactions';
+  private apiUrl = environment.api + '/transactions';
 
   constructor(private http: HttpClient) {}
 
