@@ -9,6 +9,7 @@ const routes: Routes = [
   {path: 'customer' , component: CustomerComponent},
   {path: 'transaction', component: TransactionComponent},
   { path: 'customers/:id', component: CustomerDetailsComponent },
+  { path: '**', redirectTo: 'customer' }
 
 ];
 
