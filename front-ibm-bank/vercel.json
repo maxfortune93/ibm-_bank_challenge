@@ -1,4 +1,7 @@
 {
+  "builds": [
+    { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "dist/front-ibm-bank" } }
+  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
