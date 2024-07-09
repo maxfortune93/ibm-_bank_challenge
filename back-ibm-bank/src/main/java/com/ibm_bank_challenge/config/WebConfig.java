@@ -16,7 +16,11 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:4200, https://front-ibm-bank-self.vercel.app")
+                        .allowedOrigins(
+                                "http://localhost:4200",
+                                "https://front-ibm-bank-self.vercel.app",
+                                "https://ibm-bank-challenge.vercel.app"
+                        )
                         .allowedMethods(
                                 HttpMethod.GET.name(),
                                 HttpMethod.POST.name(),
@@ -26,7 +30,8 @@ public class WebConfig {
                         .allowedHeaders(
                                 HttpHeaders.CONTENT_TYPE,
                                 HttpHeaders.AUTHORIZATION
-                                );
+                                )
+                        .allowCredentials(true);
             }
         };
     }
