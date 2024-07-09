@@ -18,4 +18,6 @@ EXPOSE 8080
 
 COPY --from=build /app/target/ibm-bank-challenge-1.0.0.jar app.jar
 
+ENV SPRING_PROFILES_ACTIVE=prod
+
 ENTRYPOINT [ "java", "-jar", "app.jar" ]
