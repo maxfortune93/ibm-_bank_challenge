@@ -28,6 +28,9 @@ export class CustomerDetailsComponent implements OnInit {
   totalElements: number = 0;
   filterForm!: FormGroup;
 
+  isLoading: boolean = false;
+  loadingMessage = 'Carregando dados, por favor aguarde...';
+
   constructor(
     private route: ActivatedRoute,
     private customerService: CustomerService,
@@ -44,9 +47,11 @@ export class CustomerDetailsComponent implements OnInit {
   ngOnInit(): void {
     const customerId = this.route.snapshot.paramMap.get('id');
     if (customerId) {
-      this.customerService.getCustomerById(customerId).subscribe(customer => {
-        this.customer = customer;
-      });
+      this.isLoading = true;
+        this.customerService.getCustomerById(customerId).subscribe(customer => {
+          this.customer = customer;
+          this.isLoading = false
+        });
       this.loadTransactions(customerId);
     }
   }

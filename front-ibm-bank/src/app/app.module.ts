@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +16,10 @@ import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomTransactionItemComponent } from './shared/custom-transaction-item/custom-transaction-item.component';
 import { SearchFilterComponent } from './shared/search-filter/search-filter.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { LoadingSkeletonComponent } from './shared/loading-skeleton/loading-skeleton.component';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +30,8 @@ import { SearchFilterComponent } from './shared/search-filter/search-filter.comp
     CustomerRegisterComponent,
     CustomerDetailsComponent,
     CustomTransactionItemComponent,
-    SearchFilterComponent
+    SearchFilterComponent,
+    LoadingSkeletonComponent
   ],
   imports: [
     BrowserModule,
@@ -36,11 +41,16 @@ import { SearchFilterComponent } from './shared/search-filter/search-filter.comp
     ReactiveFormsModule,
     FormsModule,
     CoreModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxSkeletonLoaderModule.forRoot({ animation: 'pulse', loadingText: 'This item is actually loading...' }),
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideNgxMask()
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule { }

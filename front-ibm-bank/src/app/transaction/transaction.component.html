@@ -47,7 +47,7 @@
 
     <mat-form-field appearance="outline" class="full-width" *ngIf="!isTransfer() || transactionForm.get('transactionType')?.value === 'TRANSFER'">
       <mat-label>Valor</mat-label>
-      <input matInput type="number" formControlName="amount">
+      <input matInput type="text" formControlName="amount" mask="separator.2" thousandSeparator="." decimalMarker="," prefix="R$ ">
     </mat-form-field>
 
     <div class="button-container">

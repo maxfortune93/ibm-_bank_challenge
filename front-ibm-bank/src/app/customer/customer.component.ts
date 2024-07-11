@@ -36,6 +36,9 @@ export class CustomerComponent {
   page: number = 0;
   searchTerm: string = '';
 
+  isLoading: boolean = false;
+  loadingMessage = 'Carregando dados, por favor aguarde...';
+
   public applyTooltip: boolean = true;
 
   constructor(
@@ -51,11 +54,13 @@ export class CustomerComponent {
   }
 
   loadCustomers(): void {
-    this.customerService.listCustomers(this.page, this.size, this.searchTerm).subscribe((data: Page<Customer>) => {
-      this.customers = data.content;
-      this.totalPages = data.totalPages;
-      this.totalElements = data.totalElements;
-    });
+    this.isLoading = true;
+      this.customerService.listCustomers(this.page, this.size, this.searchTerm).subscribe((data: Page<Customer>) => {
+        this.customers = data.content;
+        this.totalPages = data.totalPages;
+        this.totalElements = data.totalElements;
+        this.isLoading = false;
+      });
   }
 
   onPageChange(event: PageEvent): void {

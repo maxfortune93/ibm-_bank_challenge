@@ -1,0 +1,6 @@
+<div *ngIf="isLoading" style="margin-top: 70px;">
+  <p class="skeleton-message">{{ loadingMessage }}</p>
+  <p class="skeleton-info">Atenção: Por ser um banco de dados gratuito, pode haver um atraso no carregamento dos dados.</p>
+  <br>
+  <ngx-skeleton-loader [count]="count" [appearance]="appearance" [theme]="theme"></ngx-skeleton-loader>
+</div>
