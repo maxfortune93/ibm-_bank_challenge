@@ -3,19 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { CustomerRegisterComponent } from '../customer-register/customer-register.component';
 import { Router } from '@angular/router';
 import { CustomerService } from '../core/services/api/customers/customer.service';
-import { Observable } from 'rxjs';
+import { interval, Observable, take } from 'rxjs';
 import { Customer } from '../core/models/customer.model';
 import { PageEvent } from '@angular/material/paginator';
 import { Page } from '../core/models/page.model';
 import { formatNumberWithHyphen } from '../shared/utils/formater-utils';
-
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
 
 @Component({
   selector: 'app-customer',
@@ -23,16 +15,16 @@ export interface PeriodicElement {
   styleUrl: './customer.component.scss'
 })
 
-
 export class CustomerComponent {
 
   formatNumberWithHyphen = formatNumberWithHyphen;
   displayedColumns: string[] = ['name', 'email', 'bankName', 'accountNumber', 'actions'];
   customers$: Observable<Customer[]> | null = null;
   customers: Customer[] = [];
+  visibleCustomers: Customer[] = [];
   totalPages: number = 0;
   totalElements: number = 0;
-  size: number = 10;
+  size: number = 5;
   page: number = 0;
   searchTerm: string = '';
 
@@ -55,11 +47,27 @@ export class CustomerComponent {
 
   loadCustomers(): void {
     this.isLoading = true;
-      this.customerService.listCustomers(this.page, this.size, this.searchTerm).subscribe((data: Page<Customer>) => {
+    this.customerService.listCustomers(this.page, this.size, this.searchTerm).subscribe({
+      next: (data: Page<Customer>) => {
         this.customers = data.content;
         this.totalPages = data.totalPages;
         this.totalElements = data.totalElements;
         this.isLoading = false;
+        this.visibleCustomers = [];
+        this.animateCustomerVisibility();
+      },
+      error: (error) => {
+        console.error('Erro ao carregar clientes:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  animateCustomerVisibility(): void {
+    interval(100)
+      .pipe(take(this.customers.length))
+      .subscribe((index) => {
+        this.visibleCustomers.push(this.customers[index]);
       });
   }
 

@@ -15,7 +15,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
   providers: [
     {
       provide: MatPaginatorIntl,
-      useValue: CustomMaterialPaginator()
+      useFactory: CustomMaterialPaginator
     }
   ],
 })

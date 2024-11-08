@@ -20,7 +20,7 @@
       <span>Banco/Agencia</span>
       <span>N° Conta</span>
     </mat-card>
-    <div *ngFor="let customer of customers" class="customer-card ">
+    <div *ngFor="let customer of visibleCustomers" class="customer-card ">
       <mat-card class="container clickable-card"  (click)="viewCustomerDetails(customer.id!)">
         <span>{{ customer.name }}</span>
         <span [matTooltip]="applyTooltip ? customer.email : '' " matTooltipPosition="below" class="applyTooltip"> {{ customer.email }}</span>
@@ -36,6 +36,7 @@
       style="margin-top: 10px;"
       [length]="totalElements"
       [pageSize]="size"
+      [pageIndex]="page"
       [pageSizeOptions]="[5, 10]"
       (page)="onPageChange($event)">
     </mat-paginator>

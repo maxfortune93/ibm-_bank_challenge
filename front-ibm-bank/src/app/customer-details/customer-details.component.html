@@ -35,7 +35,7 @@
   <mat-toolbar class="toolbar-header" style="background-color: #008080;">
     <span>{{ customer.name! }}</span>
     <span class="spacer"></span>
-    <span>Saldo: {{ customer.balance |  currency:'BRL':'symbol':'1.2-2' }}</span>
+    <span>Saldo: {{ formattedCurrency(customer.balance ?? 0) }}</span>
   </mat-toolbar>
 
   <div class="customer-info">
@@ -63,6 +63,8 @@
     <mat-paginator [length]="totalElements"
                    [pageSize]="size"
                    [pageSizeOptions]="[5, 10]"
+                   [length]="totalElements"
+                   [pageIndex]="page"
                    (page)="onPageChange($event)">
     </mat-paginator>
   </div>
