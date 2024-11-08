@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 import { Transaction } from 'src/app/core/models/transaction.model';
-import { formatNumberWithHyphen } from '../utils/formater-utils';
+import { formatNumberWithHyphen, formattedCurrency } from '../utils/formater-utils';
 import { TransactionType } from '../enum/transaction-type.enum';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
@@ -64,24 +64,24 @@ export class CustomTransactionItemComponent {
     switch (this.transaction.transactionType) {
       case 'DEPOSIT':
         this.transactionTypeColor = this.TransactionTypeColors[TransactionType.DEPOSIT];
-        this.transactionAmount = `R$ ${this.transaction.amount.toFixed(2)}`;
+        this.transactionAmount = formattedCurrency(this.transaction.amount);
         break;
       case 'WITHDRAWAL':
         this.transactionTypeColor = this.TransactionTypeColors[TransactionType.WITHDRAWAL];
-        this.transactionAmount = `- R$ ${this.transaction.amount.toFixed(2)}`;
+        this.transactionAmount = `- ${formattedCurrency(this.transaction.amount)}`;
         break;
       case 'TRANSFER':
         if (this.transaction.senderId === this.currentCustomerId) {
           this.transactionTypeColor = this.TransactionTypeColors[TransactionType.TRANSFER];
-          this.transactionAmount = `- R$ ${this.transaction.amount.toFixed(2)}`;
+          this.transactionAmount = `- ${formattedCurrency(this.transaction.amount)}`;
         } else {
           this.transactionTypeColor = this.TransactionTypeColors[TransactionType.TRANSFER];
-          this.transactionAmount = `R$ ${this.transaction.amount.toFixed(2)}`;
+          this.transactionAmount = formattedCurrency(this.transaction.amount);
         }
         break;
       default:
         this.transactionTypeColor = '#000000';
-        this.transactionAmount = `R$ ${this.transaction.amount.toFixed(2)}`;
+        this.transactionAmount = formattedCurrency(this.transaction.amount);
     }
   }
 

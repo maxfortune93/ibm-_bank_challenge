@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CustomerRegisterComponent } from '../customer-register/customer-register.component';
 import { SnackbarService } from '../shared/snackbar/snackbar.service';
 import { Router } from '@angular/router';
+import { formattedCurrency } from '../shared/utils/formater-utils';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { Router } from '@angular/router';
   styleUrl: './transaction.component.scss'
 })
 export class TransactionComponent {
-
+  formattedCurrency = formattedCurrency;
   transactionForm: FormGroup;
   filteredCustomers$: Observable<Customer[]> | undefined;
   filteredRecipients$: Observable<Customer[]> | undefined;
@@ -110,10 +111,16 @@ export class TransactionComponent {
       const selectedCustomer = this.customers.find(c => c.name === customerName);
       const selectedRecipient = this.recipients.find(c => c.name === recipientName);
 
+      let rawAmount = this.transactionForm.get('amount')?.value;
+      if (rawAmount) {
+        rawAmount = rawAmount.replace(/[R$\s.]/g, '').replace(',', '.');
+      }
+      const numericAmount = parseFloat(rawAmount);
+
       const transactionDTO: TransactionDTO = {
         senderId: this.isTransfer() ? (selectedCustomer ? selectedCustomer.id || null : null) : null,
         receiverId: this.isTransfer() ? (selectedRecipient ? selectedRecipient.id || null : null) : (selectedCustomer ? selectedCustomer.id || null : null),
-        amount: this.transactionForm.get('amount')?.value,
+        amount: numericAmount ,
         transactionType: this.transactionForm.get('transactionType')?.value
       };
 
@@ -151,6 +158,7 @@ export class TransactionComponent {
       });
     }
   }
+
   private getCustomerIdByName(name: string, customerList: Customer[]): string | null {
     const customer = customerList.find(c => c.name === name);
     return customer && customer.id ? customer.id : null;
@@ -186,5 +194,19 @@ export class TransactionComponent {
       recipientName: ''
     });
     this.transactionForm.clearValidators();
+}
+
+formatCurrencyOnInput() {
+  const amountControl = this.transactionForm.get('amount');
+  if (amountControl) {
+    let rawValue = amountControl.value.replace(/[^\d]/g, '');
+    const numericValue = parseFloat(rawValue) / 100;
+
+    if (!isNaN(numericValue)) {
+      amountControl.setValue(formattedCurrency(numericValue), { emitEvent: false });
+    } else {
+      amountControl.setValue('');
+    }
+  }
 }
 }

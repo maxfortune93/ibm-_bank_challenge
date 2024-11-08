@@ -4,7 +4,7 @@ import { CustomerService } from '../core/services/api/customers/customer.service
 import { TransactionService } from '../core/services/api/transactions/transaction.service';
 import { Customer } from '../core/models/customer.model';
 import { Transaction } from '../core/models/transaction.model';
-import { formatNumberWithHyphen } from '../shared/utils/formater-utils';
+import { formatNumberWithHyphen, formattedCurrency } from '../shared/utils/formater-utils';
 import { PageEvent } from '@angular/material/paginator';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -20,6 +20,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class CustomerDetailsComponent implements OnInit {
 
   formatNumberWithHyphen = formatNumberWithHyphen;
+  formattedCurrency = formattedCurrency;
   customer!: Customer;
   transactions: Transaction[] = [];
   page: number = 0;

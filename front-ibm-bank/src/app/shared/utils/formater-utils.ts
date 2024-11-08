@@ -10,3 +10,10 @@ export function formatNumberWithHyphen(value: number | string | null): string {
   }
   return valueStr;
 }
+
+export const formattedCurrency = (value: number) => {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(value);
+}
