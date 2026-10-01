@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,13 +13,17 @@ import { SharedModule } from './shared/shared.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CustomerDetailsComponent } from './customer-details/customer-details.component';
 import { CoreModule } from './core/core.module';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { CustomTransactionItemComponent } from './shared/custom-transaction-item/custom-transaction-item.component';
 import { SearchFilterComponent } from './shared/search-filter/search-filter.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { LoadingSkeletonComponent } from './shared/loading-skeleton/loading-skeleton.component';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -41,12 +45,13 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
     ReactiveFormsModule,
     FormsModule,
     CoreModule,
-    HttpClientModule,
     NgxSkeletonLoaderModule.forRoot({ animation: 'pulse', loadingText: 'This item is actually loading...' }),
     NgxMaskDirective,
     NgxMaskPipe
   ],
   providers: [
+    provideHttpClient(withInterceptors([errorInterceptor])),
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
     provideAnimationsAsync(),
     provideNgxMask()
   ],

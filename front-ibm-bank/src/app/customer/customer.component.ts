@@ -1,9 +1,10 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, DestroyRef, HostListener, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerRegisterComponent } from '../customer-register/customer-register.component';
 import { Router } from '@angular/router';
 import { CustomerService } from '../core/services/api/customers/customer.service';
-import { interval, Observable, take } from 'rxjs';
+import { Subscription, interval, take } from 'rxjs';
 import { Customer } from '../core/models/customer.model';
 import { PageEvent } from '@angular/material/paginator';
 import { Page } from '../core/models/page.model';
@@ -19,7 +20,6 @@ export class CustomerComponent {
 
   formatNumberWithHyphen = formatNumberWithHyphen;
   displayedColumns: string[] = ['name', 'email', 'bankName', 'accountNumber', 'actions'];
-  customers$: Observable<Customer[]> | null = null;
   customers: Customer[] = [];
   visibleCustomers: Customer[] = [];
   totalPages: number = 0;
@@ -32,6 +32,9 @@ export class CustomerComponent {
   loadingMessage = 'Carregando dados, por favor aguarde...';
 
   public applyTooltip: boolean = true;
+
+  private animation?: Subscription;
+  private readonly destroyRef = inject(DestroyRef);
 
   constructor(
     private dialog: MatDialog,
@@ -56,16 +59,16 @@ export class CustomerComponent {
         this.visibleCustomers = [];
         this.animateCustomerVisibility();
       },
-      error: (error) => {
-        console.error('Erro ao carregar clientes:', error);
+      error: () => {
         this.isLoading = false;
       }
     });
   }
 
   animateCustomerVisibility(): void {
-    interval(100)
-      .pipe(take(this.customers.length))
+    this.animation?.unsubscribe();
+    this.animation = interval(100)
+      .pipe(take(this.customers.length), takeUntilDestroyed(this.destroyRef))
       .subscribe((index) => {
         this.visibleCustomers.push(this.customers[index]);
       });
@@ -83,7 +86,7 @@ export class CustomerComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.id) this.loadCustomers();
+      if (result?.id) this.loadCustomers();
     });
   }
 

@@ -1,14 +1,14 @@
 package com.ibm_bank_challenge.services.servicesImpl;
 
-import com.ibm_bank_challenge.domain.Transaction.Transaction;
-import com.ibm_bank_challenge.domain.Transaction.TransactionType;
 import com.ibm_bank_challenge.domain.customer.Customer;
+import com.ibm_bank_challenge.domain.transaction.Transaction;
 import com.ibm_bank_challenge.dtos.TransactionDTO;
 import com.ibm_bank_challenge.dtos.TransactionResponseDTO;
+import com.ibm_bank_challenge.exception.BusinessException;
 import com.ibm_bank_challenge.repositories.TransactionRepository;
 import com.ibm_bank_challenge.services.BalanceService;
 import com.ibm_bank_challenge.services.TransactionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,50 +17,42 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
-    @Autowired
-    private BalanceService balanceService;
-
-    @Autowired
-    private TransactionRepository transactionRepository;
+    private final BalanceService balanceService;
+    private final TransactionRepository transactionRepository;
 
     @Transactional
     @Override
-    public void saveTransaction(TransactionDTO transactionDTO) throws Exception {
-
-        Customer sender = null;
-        Customer receiver = null;
-
-        if (TransactionType.TRANSFER.name().equals(transactionDTO.transactionType())) {
-            Map<String, Customer> participants = balanceService.updateBalancesForTransfer(transactionDTO.senderId(), transactionDTO.receiverId(), transactionDTO.amount());
-            sender = participants.get("sender");
-            receiver = participants.get("receiver");
-        } else if (TransactionType.DEPOSIT.name().equals(transactionDTO.transactionType())) {
-            receiver = balanceService.updateBalanceForDeposit(transactionDTO.receiverId(), transactionDTO.amount());
-        } else if (TransactionType.WITHDRAWAL.name().equals(transactionDTO.transactionType())) {
-            sender = balanceService.updateBalanceForWithdrawal(transactionDTO.senderId(), transactionDTO.amount());
-        } else {
-            throw new IllegalArgumentException("Invalid transaction type: " + transactionDTO.transactionType());
-        }
-
+    public void saveTransaction(TransactionDTO dto) {
         Transaction transaction = new Transaction();
-        transaction.setTransactionType(TransactionType.valueOf(transactionDTO.transactionType()));
+        transaction.setTransactionType(dto.transactionType());
         transaction.setTimestamp(LocalDateTime.now());
-        transaction.setAmount(transactionDTO.amount());
+        transaction.setAmount(dto.amount());
 
-        if (TransactionType.TRANSFER.name().equals(transactionDTO.transactionType())) {
-            transaction.setSender(sender);
-            transaction.setReceiver(receiver);
-        } else if (TransactionType.DEPOSIT.name().equals(transactionDTO.transactionType())) {
-            transaction.setReceiver(receiver);
-        } else if (TransactionType.WITHDRAWAL.name().equals(transactionDTO.transactionType())) {
-            transaction.setSender(sender);
+        switch (dto.transactionType()) {
+            case DEPOSIT -> {
+                requireId(dto.receiverId(), "Cliente de destino é obrigatório");
+                transaction.setReceiver(balanceService.deposit(dto.receiverId(), dto.amount()));
+            }
+            case WITHDRAWAL -> {
+                requireId(dto.senderId(), "Cliente de origem é obrigatório");
+                transaction.setSender(balanceService.withdraw(dto.senderId(), dto.amount()));
+            }
+            case TRANSFER -> {
+                requireId(dto.senderId(), "Cliente de origem é obrigatório");
+                requireId(dto.receiverId(), "Cliente de destino é obrigatório");
+                if (dto.senderId().equals(dto.receiverId())) {
+                    throw new BusinessException("Não é possível transferir para a mesma conta");
+                }
+                Customer[] participants = balanceService.transfer(dto.senderId(), dto.receiverId(), dto.amount());
+                transaction.setSender(participants[0]);
+                transaction.setReceiver(participants[1]);
+            }
         }
 
         transactionRepository.save(transaction);
@@ -70,36 +62,44 @@ public class TransactionServiceImpl implements TransactionService {
     public List<TransactionResponseDTO> getTransactionsById(UUID customerId) {
         return transactionRepository.findBySenderIdOrReceiverId(customerId, customerId).stream()
                 .map(this::convertToResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public Page<TransactionResponseDTO> getTransactionsByCustomerId(UUID customerId, Pageable pageable, Integer month, Integer year) {
         if (month != null && year != null) {
+            if (month < 1 || month > 12) {
+                throw new BusinessException("Mês inválido");
+            }
             YearMonth yearMonth = YearMonth.of(year, month);
-            LocalDateTime startDate = yearMonth.atDay(1).atStartOfDay();
-            LocalDateTime endDate = yearMonth.atEndOfMonth().atTime(23, 59, 59);
-
-            Page<Transaction> transactions = transactionRepository.findBySenderIdOrReceiverIdAndTimestampBetween(customerId, startDate, endDate, pageable);
-
-            return transactions.map(this::convertToResponseDTO);
+            LocalDateTime start = yearMonth.atDay(1).atStartOfDay();
+            LocalDateTime endExclusive = yearMonth.plusMonths(1).atDay(1).atStartOfDay();
+            return transactionRepository
+                    .findByCustomerAndPeriod(customerId, start, endExclusive, pageable)
+                    .map(this::convertToResponseDTO);
         }
 
-        Page<Transaction> transactions = transactionRepository.findBySenderIdOrReceiverId(customerId, customerId, pageable);
+        return transactionRepository.findBySenderIdOrReceiverId(customerId, customerId, pageable)
+                .map(this::convertToResponseDTO);
+    }
 
-        return transactions.map(this::convertToResponseDTO);
+    private void requireId(UUID id, String message) {
+        if (id == null) {
+            throw new BusinessException(message);
+        }
     }
 
     private TransactionResponseDTO convertToResponseDTO(Transaction transaction) {
+        Customer sender = transaction.getSender();
+        Customer receiver = transaction.getReceiver();
         return new TransactionResponseDTO(
-                transaction.getSender() != null ? transaction.getSender().getId() : null,
-                transaction.getSender() != null ? transaction.getSender().getAccountNumber() : null,
-                transaction.getReceiver() != null ? transaction.getReceiver().getId() : null,
-                transaction.getReceiver() != null ? transaction.getReceiver().getAccountNumber() : null,
+                sender != null ? sender.getId() : null,
+                sender != null ? sender.getAccountNumber() : null,
+                receiver != null ? receiver.getId() : null,
+                receiver != null ? receiver.getAccountNumber() : null,
                 transaction.getAmount(),
                 transaction.getTransactionType().name(),
                 transaction.getTimestamp()
         );
     }
 }
-

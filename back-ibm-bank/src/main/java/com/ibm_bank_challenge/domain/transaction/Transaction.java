@@ -1,4 +1,4 @@
-package com.ibm_bank_challenge.domain.Transaction;
+package com.ibm_bank_challenge.domain.transaction;
 
 import com.ibm_bank_challenge.domain.customer.Customer;
 import jakarta.persistence.*;
@@ -24,7 +24,7 @@ public class Transaction implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;
 
     @Column(nullable = false)
@@ -34,11 +34,11 @@ public class Transaction implements Serializable {
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", nullable = true)
     private Customer sender;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id", nullable = true)
     private Customer receiver;
 

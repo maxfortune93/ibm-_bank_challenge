@@ -27,7 +27,7 @@ export class CustomerRegisterComponent implements OnInit {
   ngOnInit(): void {
     this.customerForm = this.fb.group({
       name: ['', Validators.required],
-      age: ['', [Validators.required, Validators.min(0)]],
+      age: ['', [Validators.required, Validators.min(0), Validators.max(150)]],
       email: ['', [Validators.required, Validators.email]],
       bank: ['', Validators.required],
       branchNumber: ['', Validators.required],
@@ -51,12 +51,8 @@ export class CustomerRegisterComponent implements OnInit {
 
       this.customerService.saveCustomer(customer).subscribe({
         next: (response: any) => {
-          this.snackbarService.success('Customer registered successfully');
+          this.snackbarService.success('Cliente cadastrado com sucesso');
           this.dialogRef.close(response);
-        },
-        error:  error => {
-          console.error('Error registering customer:', error.error);
-          this.snackbarService.error(error.error || 'Error registering customer');
         }
       });
     }

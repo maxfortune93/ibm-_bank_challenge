@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TransactionService {
-    void saveTransaction(TransactionDTO transactionDTO) throws Exception;
+    void saveTransaction(TransactionDTO transactionDTO);
+
     List<TransactionResponseDTO> getTransactionsById(UUID customerId);
 
-    Page<TransactionResponseDTO> getTransactionsByCustomerId(UUID customerId, Pageable pageable,Integer month, Integer year);
+    Page<TransactionResponseDTO> getTransactionsByCustomerId(UUID customerId, Pageable pageable, Integer month, Integer year);
 }

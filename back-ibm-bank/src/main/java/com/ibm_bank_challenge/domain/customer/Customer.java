@@ -40,7 +40,7 @@ public class Customer implements Serializable {
     @Column(nullable = false)
     private String bankName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal balance = BigDecimal.ZERO;
 
 }

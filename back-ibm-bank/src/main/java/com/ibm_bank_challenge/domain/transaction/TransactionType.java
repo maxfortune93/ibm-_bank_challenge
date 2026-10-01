@@ -1,4 +1,4 @@
-package com.ibm_bank_challenge.domain.Transaction;
+package com.ibm_bank_challenge.domain.transaction;
 
 public enum TransactionType {
     DEPOSIT, // Depósito de Dinheiro

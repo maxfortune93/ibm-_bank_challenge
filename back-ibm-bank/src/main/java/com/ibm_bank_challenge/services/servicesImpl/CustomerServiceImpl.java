@@ -9,29 +9,28 @@ import com.ibm_bank_challenge.exception.ResourceNotFoundException;
 import com.ibm_bank_challenge.repositories.CustomerRepository;
 import com.ibm_bank_challenge.services.CustomerService;
 import com.ibm_bank_challenge.services.TransactionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
-    @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private TransactionService transactionService;
+    private final CustomerRepository customerRepository;
+    private final TransactionService transactionService;
 
     @Override
     public Page<CustomerResponseDTO> listCustomers(Pageable pageable, String searchTerm) {
         Page<Customer> customerPage;
-        if (searchTerm == null || searchTerm.isEmpty()) {
+        if (searchTerm == null || searchTerm.isBlank()) {
             customerPage = customerRepository.findAll(pageable);
         } else {
             customerPage = customerRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(searchTerm, searchTerm, pageable);
@@ -41,61 +40,41 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerResponseDTO> autocompleteCustomers(String query, int limit) {
-        return customerRepository.findByNameContainingIgnoreCase(query).stream()
-                .limit(limit)
+        int size = Math.max(1, Math.min(limit, 50));
+        return customerRepository.findByNameContainingIgnoreCase(query, PageRequest.of(0, size)).stream()
                 .map(this::convertToResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public CustomerResponseDTO createCustomer(CustomerRequestDTO customerDTO) {
         Customer customer = convertToEntity(customerDTO);
-        customer.setAccountNumber(normalizeAccountNumber(customer.getAccountNumber()));
-        customer.setBalance(BigDecimal.ZERO);
-        if (!isAccountNumberUnique(customer.getAccountNumber())) {
-            throw new AlreadyExistsException("O número da conta já existe\"");
-        }
 
-        if (!isEmailUnique(customer.getEmail())) {
+        if (customerRepository.existsByAccountNumber(customer.getAccountNumber())) {
+            throw new AlreadyExistsException("O número da conta já existe");
+        }
+        if (customerRepository.existsByEmail(customer.getEmail())) {
             throw new AlreadyExistsException("O email já existe");
         }
 
-        Customer savedCustomer = customerRepository.save(customer);
-        return convertToResponseDTO(savedCustomer);
+        try {
+            return convertToResponseDTO(customerRepository.saveAndFlush(customer));
+        } catch (DataIntegrityViolationException e) {
+            // Race between the checks above and the insert: the unique constraints win.
+            throw new AlreadyExistsException("E-mail ou número da conta já cadastrado");
+        }
     }
 
     @Override
-    public CustomerResponseDTO getCustomerById(UUID id) throws Exception {
-        Customer customer = this.customerRepository.findById(id)
+    public CustomerResponseDTO getCustomerById(UUID id) {
+        return customerRepository.findById(id)
+                .map(this::convertToResponseDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
-        return convertToResponseDTO(customer);
     }
 
     @Override
     public List<TransactionResponseDTO> getTransactionsByCustomerId(UUID customerId) {
         return transactionService.getTransactionsById(customerId);
-    }
-
-    public void saveCustomer(Customer customer) {
-        this.customerRepository.save(customer);
-    }
-
-    @Override
-    public Customer getCustomerEntityById(UUID id) throws Exception {
-        return this.customerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
-    }
-
-    private String normalizeAccountNumber(String accountNumber) {
-        return accountNumber.replaceAll("-", "");
-    }
-
-    private boolean isAccountNumberUnique(String accountNumber) {
-        return this.customerRepository.findByAccountNumber(accountNumber) == null;
-    }
-
-    private boolean isEmailUnique(String email) {
-        return this.customerRepository.findByEmail(email) == null;
     }
 
     private CustomerResponseDTO convertToResponseDTO(Customer customer) {
@@ -111,14 +90,15 @@ public class CustomerServiceImpl implements CustomerService {
         );
     }
 
-    private Customer convertToEntity(CustomerRequestDTO customerDTO) {
+    private Customer convertToEntity(CustomerRequestDTO dto) {
         Customer customer = new Customer();
-        customer.setName(customerDTO.name());
-        customer.setAge(customerDTO.age());
-        customer.setEmail(customerDTO.email());
-        customer.setAccountNumber(customerDTO.accountNumber());
-        customer.setBranch(customerDTO.branch());
-        customer.setBankName(customerDTO.bankName());
+        customer.setName(dto.name().trim());
+        customer.setAge(dto.age());
+        customer.setEmail(dto.email().trim().toLowerCase());
+        customer.setAccountNumber(dto.accountNumber().replace("-", ""));
+        customer.setBranch(dto.branch());
+        customer.setBankName(dto.bankName());
+        customer.setBalance(BigDecimal.ZERO);
         return customer;
     }
 }

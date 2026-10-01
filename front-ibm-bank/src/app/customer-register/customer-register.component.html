@@ -2,11 +2,11 @@
 <mat-dialog-content>
   <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Name</mat-label>
+      <mat-label>Nome</mat-label>
       <input matInput formControlName="name" required>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Age</mat-label>
+      <mat-label>Idade</mat-label>
       <input matInput formControlName="age" type="number" required>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
@@ -14,21 +14,21 @@
       <input matInput formControlName="email" type="email" required>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Bank Name</mat-label>
+      <mat-label>Banco</mat-label>
       <mat-select formControlName="bank" required>
         <mat-option *ngFor="let bank of banks" [value]="bank.name">{{ bank.name }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Branch Number</mat-label>
+      <mat-label>Agência</mat-label>
       <input matInput formControlName="branchNumber" required>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Account Number</mat-label>
+      <mat-label>Conta</mat-label>
       <input matInput formControlName="accountNumber" required>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Digit</mat-label>
+      <mat-label>Dígito</mat-label>
       <input matInput formControlName="digit" required>
     </mat-form-field>
     <div class="actions">

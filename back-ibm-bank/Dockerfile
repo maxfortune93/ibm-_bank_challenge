@@ -1,23 +1,15 @@
-FROM ubuntu:latest AS build
-LABEL authors="marouane"
-
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
-
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY pom.xml .
+RUN mvn -q dependency:go-offline
+COPY src ./src
+RUN mvn -q clean package -DskipTests
 
-COPY . .
-
-RUN apt-get install maven -y
-RUN mvn clean install
-RUN ls -la /app/target/
-
-FROM openjdk:17-jdk-slim
-
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+RUN useradd --system --no-create-home appuser
+COPY --from=build /app/target/ibm-bank-challenge-*.jar app.jar
+USER appuser
 EXPOSE 8080
-
-COPY --from=build /app/target/ibm-bank-challenge-1.0.0.jar app.jar
-
 ENV SPRING_PROFILES_ACTIVE=prod
-
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+ENTRYPOINT ["java", "-jar", "app.jar"]
