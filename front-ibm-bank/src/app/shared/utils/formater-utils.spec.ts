@@ -1,4 +1,4 @@
-import { formatNumberWithHyphen, formattedCurrency } from './formater-utils';
+import { formatNumberWithHyphen, formattedCurrency, initials } from './formater-utils';
 
 describe('formater-utils', () => {
   it('separates the check digit with a hyphen', () => {
@@ -13,5 +13,17 @@ describe('formater-utils', () => {
 
   it('formats values as Brazilian currency', () => {
     expect(formattedCurrency(1234.5).replace(/\s/g, ' ')).toBe('R$ 1.234,50');
+  });
+});
+
+describe('initials', () => {
+  it('uses the first and last name', () => {
+    expect(initials('Ana Maria Souza')).toBe('AS');
+    expect(initials('bruno')).toBe('B');
+  });
+
+  it('falls back to a placeholder', () => {
+    expect(initials('  ')).toBe('?');
+    expect(initials(null)).toBe('?');
   });
 });

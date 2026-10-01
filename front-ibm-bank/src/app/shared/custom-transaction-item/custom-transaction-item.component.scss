@@ -1,74 +1,49 @@
-.transaction-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  border-bottom: 1px solid #333;
-}
-
-.transaction-details span {
-  margin: 0 10px;
-}
-
-.transaction-type {
-  font-weight: bold;
-}
-
-.transaction-amount {
-  font-weight: bold;
-}
-
-.container{
+.transaction {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  gap:10px;
-  padding: 20px;
-  justify-content: space-between;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  justify-items: center;
+  grid-template-columns: 40px minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
-
-  span{
-    font-size: small;
-  }
+  gap: 16px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
 }
 
-.transaction-details {
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: color-mix(in srgb, currentColor 14%, transparent);
+}
+
+.info, .when {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 5px;
+  gap: 2px;
+  min-width: 0;
 }
 
-.arrow {
-  font-size: 20px;
-  margin: 5px 0;
+.label { font-weight: 500; }
+.description, .time { color: var(--muted); font-size: .8rem; }
+.when { font-size: .9rem; }
+
+.amount {
+  font-weight: 500;
+  text-align: right;
+  white-space: nowrap;
 }
 
-.container-div{
-  display: grid;
-  grid-template-columns: 1fr 1.8fr 1fr;
-  gap:10px;
-  justify-content: space-between;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  justify-items: center;
-  transaction-details-mobile
-
-  span{
-    font-size: small;
+@media (max-width: 600px) {
+  .transaction {
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "icon info amount"
+      "icon when amount";
+    gap: 2px 12px;
   }
-}
-
-.transaction-details-mobile {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-}
-
-mat-panel-title{
-  span{
-    font-size: small;
-  }
+  .icon { grid-area: icon; }
+  .info { grid-area: info; }
+  .when { grid-area: when; flex-direction: row; gap: 6px; font-size: .8rem; color: var(--muted); }
+  .amount { grid-area: amount; }
 }

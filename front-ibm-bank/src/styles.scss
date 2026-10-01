@@ -1,26 +1,114 @@
-/* You can add global styles to this file, and also import other style files */
-
 @use '@angular/material' as mat;
 
 @include mat.core();
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+$theme: mat.define-dark-theme((
+  color: (
+    primary: mat.define-palette(mat.$teal-palette, 400, 200, 700),
+    accent: mat.define-palette(mat.$cyan-palette, A200),
+    warn: mat.define-palette(mat.$red-palette),
+  ),
+  typography: mat.define-typography-config($font-family: 'Roboto, "Helvetica Neue", sans-serif'),
+  density: 0,
+));
 
+:root {
+  @include mat.all-component-themes($theme);
+
+  --bg: #14181c;
+  --surface: #1e2429;
+  --surface-hover: #262d33;
+  --border: #2f373e;
+  --text: #e8edf1;
+  --muted: #8d99a5;
+  --brand: #26c6c6;
+  --brand-strong: #0f8f8f;
+  --positive: #4cd991;
+  --negative: #ff7a6b;
+  --radius: 12px;
+  --mat-paginator-container-background-color: transparent;
+  --mat-standard-button-toggle-background-color: transparent;
+  --mat-standard-button-toggle-selected-state-background-color: color-mix(in srgb, #26c6c6 22%, transparent);
+}
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+// ---- shared page building blocks ----
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 500;
+  }
+
+  @media (max-width: 480px) {
+    flex-wrap: wrap;
+    h1 { font-size: 1.4rem; }
+  }
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.avatar {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--brand) 18%, transparent);
+  color: var(--brand);
+  font-weight: 500;
+  letter-spacing: .5px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 16px;
+  color: var(--muted);
+  text-align: center;
+
+  mat-icon, .material-icons { font-size: 40px; width: 40px; height: 40px; opacity: .6; }
+}
+
+.positive { color: var(--positive); }
+.negative { color: var(--negative); }
+
+// ---- snackbars ----
 .mat-mdc-snack-bar-container {
   &.red-snackbar {
-    --mdc-snackbar-container-color: #f32121;
+    --mdc-snackbar-container-color: #c62828;
     --mat-mdc-snack-bar-button-color: #fff;
     --mdc-snackbar-supporting-text-color: #fff;
   }
 
   &.green-snackbar {
-    --mdc-snackbar-container-color: #61DDA0;
-    --mat-mdc-snack-bar-button-color: #303030;
-    --mdc-snackbar-supporting-text-color: #303030;
+    --mdc-snackbar-container-color: #4cd991;
+    --mat-mdc-snack-bar-button-color: #14181c;
+    --mdc-snackbar-supporting-text-color: #14181c;
   }
 }
-
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -32,40 +120,6 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-
-// /* Change the border width */
-// .mdc-text-field--outlined:not(.mdc-text-field--disabled)
-//   .mdc-notched-outline
-//   .mdc-notched-outline__leading,
-// .mdc-text-field--outlined:not(.mdc-text-field--disabled)
-//   .mdc-notched-outline
-//   .mdc-notched-outline__notch,
-// .mdc-text-field--outlined:not(.mdc-text-field--disabled)
-//   .mdc-notched-outline
-//   .mdc-notched-outline__trailing {
-//   border-width: 1.5px !important;
-// }
-
-// /* Change the border focused color */
-// .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused
-//   .mdc-notched-outline__leading,
-// .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused
-//   .mdc-notched-outline__notch,
-// .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused
-//   .mdc-notched-outline__trailing {
-//   border-color: #61DDA0 !important;
-// }
-
-// /* Change the border hover color */
-// .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover
-//   .mdc-notched-outline
-//   .mdc-notched-outline__leading,
-// .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover
-//   .mdc-notched-outline
-//   .mdc-notched-outline__notch,
-// .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover
-//   .mdc-notched-outline
-//   .mdc-notched-outline__trailing {
-//   border-color: #61DDA0 !important;
-// }
-
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

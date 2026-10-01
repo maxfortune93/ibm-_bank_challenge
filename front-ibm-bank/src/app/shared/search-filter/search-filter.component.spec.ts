@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { SearchFilterComponent } from './search-filter.component';
 
 describe('SearchFilterComponent', () => {
@@ -9,7 +10,7 @@ describe('SearchFilterComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [SearchFilterComponent],
-      imports: [FormsModule]
+      imports: [FormsModule, MatIconModule]
     });
     fixture = TestBed.createComponent(SearchFilterComponent);
     component = fixture.componentInstance;

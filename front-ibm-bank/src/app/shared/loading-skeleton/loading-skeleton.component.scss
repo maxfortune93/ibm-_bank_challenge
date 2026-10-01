@@ -1,9 +1,12 @@
+.skeleton { margin-top: 24px; }
+
 .skeleton-message, .skeleton-info {
-  color: #777;
+  margin: 0 0 4px;
+  color: var(--muted);
   text-align: center;
-  margin-top: 1rem;
 }
 
 .skeleton-info {
-  font-size: small;
+  margin-bottom: 20px;
+  font-size: .8rem;
 }

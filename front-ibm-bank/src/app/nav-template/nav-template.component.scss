@@ -1,34 +1,53 @@
-.toolbar-spacer {
-  flex: 1 1 auto;
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
 }
 
-.drawer{
-  width: 250px;
-  padding-top: 25px;
-}
-
-.content{
-  min-height: calc(100vh - 104px);
-  box-shadow: none;
-  padding: 20px 50px;
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   max-width: 1024px;
-  margin: auto;
-
+  height: 60px;
+  margin: 0 auto;
+  padding: 0 16px;
 }
 
-.menu-button{
-  margin-bottom: 10px;
-  &:hover{
-    background-color: #008082;
-  }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--brand);
+  text-decoration: none;
+  font-size: 1.15rem;
+  font-weight: 500;
 }
 
-.menu-button.active {
-  background-color: #008080;
-  color: white;
+nav {
+  display: flex;
+  gap: 4px;
 }
 
-::ng-deep .mat-drawer-shown {
-  visibility: visible;
-  background-color: rgba(0, 0, 0, 0.5)!important;
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: .9rem;
+  transition: background-color .2s, color .2s;
+
+  &:hover { background: var(--surface-hover); color: var(--text); }
+  &.active { background: color-mix(in srgb, var(--brand) 18%, transparent); color: var(--brand); }
+}
+
+@media (max-width: 480px) {
+  .brand-name { display: none; }
+  .nav-link { padding: 8px 12px; }
 }

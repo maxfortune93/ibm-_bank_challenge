@@ -10,7 +10,7 @@ export class LoadingSkeletonComponent {
   @Input() loadingMessage: string = 'Carregando dados, por favor aguarde...';
   @Input() count: number = 8;
   @Input() appearance: 'circle' | 'line' | 'custom-content' = 'line';
-  @Input() theme: any = { 'background-color': '#777', height: '20px', 'margin-bottom': '10px' };
+  @Input() theme: any = { 'background-color': 'var(--surface-hover)', height: '20px', 'margin-bottom': '10px' };
 
   constructor() { }
 }
