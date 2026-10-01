@@ -31,6 +31,7 @@ Business rules worth knowing:
 - Balance changes run in a single DB transaction and lock the customer rows (`SELECT ... FOR UPDATE`), so concurrent withdrawals/transfers cannot overdraw an account. Transfers lock both accounts in a fixed order to avoid deadlocks.
 - Requests are validated (Bean Validation); errors are returned as `{ "message": "...", "errors": [...] }` with the proper HTTP status.
 - Schema: Hibernate `update` in `dev` (H2 in memory) and `dev-local` (Postgres); Flyway + `ddl-auto=validate` in `prod`.
+- Demo data: `V2__seed_demo_data.sql` (6 customers, 12 transactions, balances consistent with the statement) is applied by Flyway in `prod`. It is idempotent and skips rows that already exist. To get the same data locally, run the API with `--spring.flyway.enabled=true --spring.jpa.hibernate.ddl-auto=validate`, or delete the `V2` file to start empty.
 
 ### Main endpoints
 
