@@ -91,3 +91,11 @@ Configure in **GitHub → Settings → Secrets and variables → Actions**:
 | Variable | `RENDER_HEALTH_URL` | Optional. e.g. `https://<service>.onrender.com/actuator/health` |
 
 On Render, turn **Auto-Deploy off** for the service so the workflow is the only thing that deploys. The workflow overwrites *all* env vars of the service with the list above (`SPRING_PROFILES_ACTIVE=prod` is set by the Dockerfile), so add any new variable to `deploy.yml` too.
+
+### Front end on Render (Static Site)
+
+`render.yaml` describes the Angular app as a free Render Static Site (`ibm-bank-front`, root `front-ibm-bank`, publish dir `dist/front-ibm-bank/browser`). In Render: **New → Blueprint** and pick this repository (or create a Static Site by hand with the same values). It redeploys on every push to `main`; no rewrite rule is needed because the app uses hash routing.
+
+The site URL is `https://<service-name>.onrender.com` (`https://ibm-bank-front.onrender.com` unless Render adds a suffix because the name is taken). That origin must be allowed by the API's CORS: it is in the default list in `application.properties`, but if the actual URL differs, set the `CORS_ALLOWED_ORIGINS` repository variable (comma separated) so the deploy workflow sends it to the API service.
+
+The API URL used by the production build is in `front-ibm-bank/src/environments/environment.prod.ts`.

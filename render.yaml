@@ -1,0 +1,26 @@
+# Render Blueprint for the Angular front end (static site, free).
+# The API is a separate Docker web service (back-ibm-bank) deployed by .github/workflows/deploy.yml.
+services:
+  - type: web
+    name: ibm-bank-front
+    runtime: static
+    rootDir: front-ibm-bank
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist/front-ibm-bank/browser
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache
