@@ -73,3 +73,21 @@ cd front-ibm-bank && npx ng test --watch=false
 ```
 
 CI (`.github/workflows/ci.yml`) runs both suites and the production build on every push and PR.
+
+## Deploy (Render)
+
+`.github/workflows/deploy.yml` runs after the **CI** workflow succeeds on `main` (or manually via *Run workflow*). It syncs the environment variables to the Render service, triggers a deploy, waits until it is `live` and optionally calls the health endpoint.
+
+Configure in **GitHub → Settings → Secrets and variables → Actions**:
+
+| Type | Name | Description |
+| ---- | ---- | ----------- |
+| Secret | `RENDER_API_KEY` | Render API key (Account Settings → API Keys) |
+| Secret | `RENDER_SERVICE_ID` | Service id (`srv-...`, shown in the service URL/settings) |
+| Secret | `DATABASE_URL` | JDBC url, e.g. `jdbc:postgresql://host:5432/db` |
+| Secret | `DATABASE_USERNAME` | Database user |
+| Secret | `DATABASE_PASSWORD` | Database password |
+| Variable | `CORS_ALLOWED_ORIGINS` | Optional. Comma separated front-end origins |
+| Variable | `RENDER_HEALTH_URL` | Optional. e.g. `https://<service>.onrender.com/actuator/health` |
+
+On Render, turn **Auto-Deploy off** for the service so the workflow is the only thing that deploys. The workflow overwrites *all* env vars of the service with the list above (`SPRING_PROFILES_ACTIVE=prod` is set by the Dockerfile), so add any new variable to `deploy.yml` too.
