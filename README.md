@@ -94,7 +94,9 @@ On Render, turn **Auto-Deploy off** for the service so the workflow is the only 
 
 ### Front end on Render (Static Site)
 
-`render.yaml` describes the Angular app as a free Render Static Site (`ibm-bank-front`, root `front-ibm-bank`, publish dir `dist/front-ibm-bank/browser`). In Render: **New → Blueprint** and pick this repository (or create a Static Site by hand with the same values). It redeploys on every push to `main`; no rewrite rule is needed because the app uses hash routing.
+`render.yaml` describes both services: the API (`ibm-bank-challenge`, Docker, built from `back-ibm-bank/Dockerfile`, health check `/actuator/health`, auto-deploy off because `deploy.yml` deploys it) and the Angular app as a free Static Site (`ibm-bank-front`, root `front-ibm-bank`, publish dir `dist/front-ibm-bank/browser`, redeployed on every push to `main`). In Render: **New → Blueprint** and pick this repository. Render asks for the three `DATABASE_*` values on creation (they are `sync: false`, so they never live in git). No rewrite rule is needed because the app uses hash routing.
+
+A Blueprint cannot adopt a service that already exists with the same name: delete the old API service first (the Postgres database is a separate resource and is not deleted with it), and after creating the Blueprint put the new service id in the `RENDER_SERVICE_ID` secret.
 
 The site URL is `https://<service-name>.onrender.com` (`https://ibm-bank-front.onrender.com` unless Render adds a suffix because the name is taken). That origin must be allowed by the API's CORS: it is in the default list in `application.properties`, but if the actual URL differs, set the `CORS_ALLOWED_ORIGINS` repository variable (comma separated) so the deploy workflow sends it to the API service.
 
