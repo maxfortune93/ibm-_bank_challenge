@@ -6,8 +6,7 @@
     "start": "ng serve --proxy-config proxy.conf.js",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "preview": "serve dist/front-ibm-bank/browser -l 4200"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -21,10 +20,11 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "@fontsource/roboto": "^5.3.0",
+    "material-icons": "^1.13.14",
     "ngx-mask": "^17.1.1",
     "ngx-skeleton-loader": "^9.0.0",
     "rxjs": "~7.8.0",
-    "serve": "^14.2.3",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
   },

@@ -1,23 +1,33 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 import { SearchFilterComponent } from './search-filter.component';
 
 describe('SearchFilterComponent', () => {
   let component: SearchFilterComponent;
   let fixture: ComponentFixture<SearchFilterComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SearchFilterComponent]
-    })
-    .compileComponents();
-    
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [SearchFilterComponent],
+      imports: [FormsModule, MatIconModule]
+    });
     fixture = TestBed.createComponent(SearchFilterComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  it('emits only the last term after the debounce time', fakeAsync(() => {
+    const emitted: string[] = [];
+    component.searchChanged.subscribe((t: string) => emitted.push(t));
+
+    component.searchTerm = 'a';
+    component.onSearchChange();
+    component.searchTerm = 'ab';
+    component.onSearchChange();
+    tick(299);
+    expect(emitted).toEqual([]);
+
+    tick(1);
+    expect(emitted).toEqual(['ab']);
+  }));
 });

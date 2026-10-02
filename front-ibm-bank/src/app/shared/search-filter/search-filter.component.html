@@ -1,11 +1,10 @@
 <div class="search-filter">
+  <mat-icon class="search-icon" aria-hidden="true">search</mat-icon>
   <input
-    type="text"
+    type="search"
     [(ngModel)]="searchTerm"
     (input)="onSearchChange()"
     placeholder="Buscar por nome ou email"
+    aria-label="Buscar clientes por nome ou email"
   />
-  <span class="search-icon">
-    <i class="material-icons">search</i>
-  </span>
 </div>

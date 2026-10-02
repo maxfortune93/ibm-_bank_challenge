@@ -1,126 +1,67 @@
-.spacer {
-  flex: 1 1 auto;
+.page-header { margin-bottom: 12px; }
+
+.summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
 }
 
-.customer-info {
+.avatar.large { width: 64px; height: 64px; font-size: 1.3rem; }
+
+.who {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding-top: 10px;
+  gap: 4px;
+  min-width: 0;
+
+  h1 { margin: 0 0 4px; font-size: 1.4rem; font-weight: 500; }
+  .muted { overflow-wrap: anywhere; }
 }
 
-.customer-info-content{
+.muted { color: var(--muted); font-size: .85rem; }
+
+.balance {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 20px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+
+  strong { font-size: 1.8rem; font-weight: 500; color: var(--brand); }
 }
 
-.transactions-card {
-  margin-top: 20px;
-}
-
-.title{
- color: #888;
-}
-
-.back-button{
-  margin-bottom: 10px;
-  &:hover {
-    background-color: #7b1fa2 !important;
-  }
-}
-
-.header-filter-form{
+.statement-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 32px 0 12px;
+
+  h2 { margin: 0; font-size: 1.2rem; font-weight: 500; }
 }
 
-.filter-form{
+.filter-form {
   display: flex;
-  flex-direction: row;
-  gap: 15px;
-  justify-content: flex-end;
-  align-items: baseline;
-  width: auto;
-  padding: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  mat-form-field { width: 140px; }
+  .year { width: 100px; }
 }
 
-.filter-div-form{
-  width: 55%;
-}
-
-.mat-mdc-form-field {
-  min-width: 40px;
-}
-
-.filter-button, .filter-mat-form{
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  width: 100%;
-}
-
-@media (max-width: 767px) {
-  .header-filter-form {
-    flex-direction: column;
+@media (max-width: 640px) {
+  .summary {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 16px;
+  }
+  .balance {
+    grid-column: 1 / -1;
     align-items: flex-start;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
   }
-
-  .filter-div-form {
-    width: 100%;
-    flex-direction: row;
-  }
-
-  .mat-mdc-form-field, .filter-mat-form {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .filter-button {
-    width: auto;
-  }
-
+  .filter-form { width: 100%; }
 }
-
-@media (max-width: 499px) {
-
-  .mat-mdc-form-field, .filter-mat-form {
-    width: 100%;
-    min-width: 0;
-  }
-
-  .filter-form{
-    padding: 0;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-  }
-
-   .filter-button{
-    justify-content: center;
-    margin-bottom: 12px;
-    margin-top: -25px;
-  }
-
-}
-
-@media (max-width: 380px) {
-
-  .toolbar-header{
-    display: flex;
-    flex-direction: column-reverse;
-    height: 65px;
-
-  }
-}
-
-@media (max-width: 485px) {
-
-  .customer-info-content{
-    flex-direction: column;
-    gap: 5px;
-  }
-}
-

@@ -4,25 +4,28 @@
   align-items: center;
 }
 
-.search-filter input[type="text"] {
-  width: 100%;
-  padding: 10px 40px 10px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #333;
-}
-
-.search-filter .search-icon {
+.search-icon {
   position: absolute;
-  right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  left: 14px;
+  color: var(--muted);
   pointer-events: none;
 }
 
-.search-filter .search-icon .material-icons {
-  color: #aaa;
+input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px 14px 46px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  transition: border-color .2s, box-shadow .2s;
+
+  &::placeholder { color: var(--muted); }
+  &:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent);
+  }
 }

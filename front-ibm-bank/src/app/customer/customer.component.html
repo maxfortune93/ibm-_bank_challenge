@@ -1,52 +1,61 @@
-<div class="div-header">
-  <mat-card-header class="card-header">
-    <mat-card-title>Clientes</mat-card-title>
-  </mat-card-header>
-  <button mat-flat-button class="add-button" (click)="openRegisterModal()">
-    <mat-icon>add</mat-icon>
+<div class="page-header">
+  <h1>Clientes</h1>
+  <button mat-flat-button color="primary" (click)="openRegisterModal()">
+    <mat-icon>person_add</mat-icon>
     Cadastrar
   </button>
 </div>
 
-<div class="div-content">
-  <div class="search-filter">
-    <app-search-filter  (searchChanged)="onSearchChanged($event)"></app-search-filter>
-  </div>
-
-  <div  *ngIf="!isLoading">
-    <mat-card class="container">
-      <span>Nome</span>
-      <span class="applyTooltip">Email</span>
-      <span>Banco/Agencia</span>
-      <span>N° Conta</span>
-    </mat-card>
-    <div *ngFor="let customer of visibleCustomers" class="customer-card ">
-      <mat-card class="container clickable-card"  (click)="viewCustomerDetails(customer.id!)">
-        <span>{{ customer.name }}</span>
-        <span [matTooltip]="applyTooltip ? customer.email : '' " matTooltipPosition="below" class="applyTooltip"> {{ customer.email }}</span>
-        <span class="transaction-details">
-          <span>{{ customer.bankName }}</span>
-          <!-- <span class="arrow">↓</span> -->
-          <span>{{ customer.branch }}</span>
-        </span>
-        <span >{{ formatNumberWithHyphen(customer.accountNumber) }}</span>
-      </mat-card>
-    </div>
-      <mat-paginator
-      style="margin-top: 10px;"
-      [length]="totalElements"
-      [pageSize]="size"
-      [pageIndex]="page"
-      [pageSizeOptions]="[5, 10]"
-      (page)="onPageChange($event)">
-    </mat-paginator>
-  </div>
-</div>
+<app-search-filter (searchChanged)="onSearchChanged($event)"></app-search-filter>
 
 <app-loading-skeleton
   [isLoading]="isLoading"
   [loadingMessage]="loadingMessage"
-  [count]="6"
+  [count]="5"
   appearance="line"
-  [theme]="{ 'background-color': '#777', height: '20px', 'margin-bottom': '10px' }">
+  [theme]="{ 'background-color': 'var(--surface-hover)', height: '64px', 'margin-bottom': '10px', 'border-radius': '12px' }">
 </app-loading-skeleton>
+
+<ng-container *ngIf="!isLoading">
+  <ul class="customer-list" *ngIf="customers.length > 0; else empty">
+    <li *ngFor="let customer of customers; let i = index" [style.animation-delay.ms]="i * 60">
+      <button type="button" class="customer-row panel" (click)="viewCustomerDetails(customer.id!)">
+        <span class="avatar" aria-hidden="true">{{ initials(customer.name) }}</span>
+
+        <span class="identity">
+          <span class="name">{{ customer.name }}</span>
+          <span class="email">{{ customer.email }}</span>
+        </span>
+
+        <span class="bank">
+          <span>{{ customer.bankName }}</span>
+          <span class="muted">Ag. {{ customer.branch }}</span>
+        </span>
+
+        <span class="account">
+          <span class="muted">Conta</span>
+          <span>{{ formatNumberWithHyphen(customer.accountNumber) }}</span>
+        </span>
+
+        <mat-icon class="chevron" aria-hidden="true">chevron_right</mat-icon>
+      </button>
+    </li>
+  </ul>
+
+  <ng-template #empty>
+    <div class="empty-state panel">
+      <mat-icon>person_search</mat-icon>
+      <strong>Nenhum cliente encontrado</strong>
+      <span>{{ searchTerm ? 'Tente outro termo de busca.' : 'Cadastre o primeiro cliente para começar.' }}</span>
+    </div>
+  </ng-template>
+
+  <mat-paginator
+    *ngIf="totalElements > 0"
+    [length]="totalElements"
+    [pageSize]="size"
+    [pageIndex]="page"
+    [pageSizeOptions]="[5, 10]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</ng-container>

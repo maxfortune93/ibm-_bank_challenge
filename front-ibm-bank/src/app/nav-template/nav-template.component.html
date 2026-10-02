@@ -1,28 +1,19 @@
-<mat-toolbar>
-  <button mat-icon-button  (click)="myDrawer.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" routerLink="/customer" aria-label="IBM Bank - início">
+      <mat-icon>account_balance</mat-icon>
+      <span class="brand-name">IBM Bank</span>
+    </a>
 
-  <span class="toolbar-spacer"></span>
-  IBM Bank Challenge
-</mat-toolbar>
-
-<mat-drawer-container >
-  <mat-drawer #myDrawer class="drawer" opened="false" position="start" mode="over">
-    <mat-list>
-      <mat-list-item class="menu-button" [routerLink]="'customer'" routerLinkActive="active" (click)="myDrawer.toggle()">
-        <mat-icon class="icon" matListItemIcon>group</mat-icon>
-        <span >Clientes</span>
-      </mat-list-item>
-      <mat-list-item class="menu-button" [routerLink]="'transaction'" routerLinkActive="active" (click)="myDrawer.toggle()">
-        <mat-icon class="icon" matListItemIcon>payments</mat-icon>
-        <span >Depositar/Transferir</span>
-      </mat-list-item>
-    </mat-list>
-  </mat-drawer>
-  <mat-drawer-content>
-    <div class="content">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-drawer-content>
-</mat-drawer-container>
+    <nav aria-label="Principal">
+      <a class="nav-link" routerLink="/customer" routerLinkActive="active">
+        <mat-icon>group</mat-icon>
+        <span>Clientes</span>
+      </a>
+      <a class="nav-link" routerLink="/transaction" routerLinkActive="active">
+        <mat-icon>swap_horiz</mat-icon>
+        <span>Operações</span>
+      </a>
+    </nav>
+  </div>
+</header>

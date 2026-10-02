@@ -1,13 +1,12 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerRegisterComponent } from '../customer-register/customer-register.component';
 import { Router } from '@angular/router';
 import { CustomerService } from '../core/services/api/customers/customer.service';
-import { interval, Observable, take } from 'rxjs';
 import { Customer } from '../core/models/customer.model';
 import { PageEvent } from '@angular/material/paginator';
 import { Page } from '../core/models/page.model';
-import { formatNumberWithHyphen } from '../shared/utils/formater-utils';
+import { formatNumberWithHyphen, initials } from '../shared/utils/formater-utils';
 
 @Component({
   selector: 'app-customer',
@@ -15,13 +14,11 @@ import { formatNumberWithHyphen } from '../shared/utils/formater-utils';
   styleUrl: './customer.component.scss'
 })
 
-export class CustomerComponent {
+export class CustomerComponent implements OnInit {
 
   formatNumberWithHyphen = formatNumberWithHyphen;
-  displayedColumns: string[] = ['name', 'email', 'bankName', 'accountNumber', 'actions'];
-  customers$: Observable<Customer[]> | null = null;
+  initials = initials;
   customers: Customer[] = [];
-  visibleCustomers: Customer[] = [];
   totalPages: number = 0;
   totalElements: number = 0;
   size: number = 5;
@@ -31,15 +28,11 @@ export class CustomerComponent {
   isLoading: boolean = false;
   loadingMessage = 'Carregando dados, por favor aguarde...';
 
-  public applyTooltip: boolean = true;
-
   constructor(
     private dialog: MatDialog,
     private router: Router,
     private customerService: CustomerService
-  ) {
-    this.applyTooltip = window.innerWidth > 768;
-  }
+  ) {}
 
   ngOnInit(): void {
     this.loadCustomers();
@@ -53,22 +46,11 @@ export class CustomerComponent {
         this.totalPages = data.totalPages;
         this.totalElements = data.totalElements;
         this.isLoading = false;
-        this.visibleCustomers = [];
-        this.animateCustomerVisibility();
       },
-      error: (error) => {
-        console.error('Erro ao carregar clientes:', error);
+      error: () => {
         this.isLoading = false;
       }
     });
-  }
-
-  animateCustomerVisibility(): void {
-    interval(100)
-      .pipe(take(this.customers.length))
-      .subscribe((index) => {
-        this.visibleCustomers.push(this.customers[index]);
-      });
   }
 
   onPageChange(event: PageEvent): void {
@@ -83,7 +65,7 @@ export class CustomerComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.id) this.loadCustomers();
+      if (result?.id) this.loadCustomers();
     });
   }
 
@@ -95,11 +77,6 @@ export class CustomerComponent {
 
   viewCustomerDetails(customerId: string): void {
     this.router.navigate(['/customers', customerId]);
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: { target: { innerWidth: number; }; }) {
-    this.applyTooltip = event.target.innerWidth > 768;
   }
 
 }

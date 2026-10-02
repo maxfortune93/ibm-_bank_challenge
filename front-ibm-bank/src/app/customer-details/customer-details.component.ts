@@ -4,9 +4,10 @@ import { CustomerService } from '../core/services/api/customers/customer.service
 import { TransactionService } from '../core/services/api/transactions/transaction.service';
 import { Customer } from '../core/models/customer.model';
 import { Transaction } from '../core/models/transaction.model';
-import { formatNumberWithHyphen, formattedCurrency } from '../shared/utils/formater-utils';
+import { initials, formatNumberWithHyphen, formattedCurrency } from '../shared/utils/formater-utils';
 import { PageEvent } from '@angular/material/paginator';
 import { Location } from '@angular/common';
+import { SnackbarService } from '../shared/snackbar/snackbar.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 
@@ -20,6 +21,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class CustomerDetailsComponent implements OnInit {
 
   formatNumberWithHyphen = formatNumberWithHyphen;
+  initials = initials;
+  months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
   formattedCurrency = formattedCurrency;
   customer!: Customer;
   transactions: Transaction[] = [];
@@ -38,6 +41,7 @@ export class CustomerDetailsComponent implements OnInit {
     private transactionService: TransactionService,
     private location: Location,
     private fb: FormBuilder,
+    private snackbarService: SnackbarService,
   ) {
     this.filterForm = this.fb.group({
       month: [''],
@@ -49,10 +53,16 @@ export class CustomerDetailsComponent implements OnInit {
     const customerId = this.route.snapshot.paramMap.get('id');
     if (customerId) {
       this.isLoading = true;
-        this.customerService.getCustomerById(customerId).subscribe(customer => {
+      this.customerService.getCustomerById(customerId).subscribe({
+        next: customer => {
           this.customer = customer;
-          this.isLoading = false
-        });
+          this.isLoading = false;
+        },
+        error: () => {
+          this.isLoading = false;
+          this.goBack();
+        }
+      });
       this.loadTransactions(customerId);
     }
   }
@@ -61,23 +71,36 @@ export class CustomerDetailsComponent implements OnInit {
     const sort = 'timestamp,desc';
     const month = this.filterForm.get('month')?.value;
     const year = this.filterForm.get('year')?.value;
-    this.transactionService.getTransactionsByCustomerId(customerId, this.page, this.size, sort,month, year).subscribe(page => {
-      this.transactions = page.content;
-      this.totalPages = page.totalPages;
-      this.totalElements = page.totalElements;
+    this.transactionService.getTransactionsByCustomerId(customerId, this.page, this.size, sort,month, year).subscribe({
+      next: page => {
+        this.transactions = page.content;
+        this.totalPages = page.totalPages;
+        this.totalElements = page.totalElements;
+      },
+      error: () => {
+        this.transactions = [];
+      }
     });
   }
 
   onFilterChange(): void {
     this.page = 0;
+    // The API filters by month + year together, so a month alone means "this year".
+    const { month, year } = this.filterForm.value;
+    if (month && !year) {
+      this.filterForm.patchValue({ year: new Date().getFullYear() });
+    } else if (year && !month) {
+      this.snackbarService.info('Selecione também o mês para filtrar.');
+      return;
+    }
     this.loadTransactions(this.customer.id!);
   }
 
   onFilterClear(): void {
     this.page = 0;
     this.filterForm.reset({
-      month: [''],
-      year: ['']
+      month: '',
+      year: ''
     });
     this.loadTransactions(this.customer.id!);
   }

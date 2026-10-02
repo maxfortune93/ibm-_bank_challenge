@@ -37,7 +37,10 @@
               "src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/purple-green.css",
+              "node_modules/@fontsource/roboto/400.css",
+              "node_modules/@fontsource/roboto/500.css",
+              "node_modules/@fontsource/roboto/700.css",
+              "node_modules/material-icons/iconfont/material-icons.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -104,10 +107,14 @@
               "src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/purple-green.css",
+              "node_modules/@fontsource/roboto/400.css",
+              "node_modules/@fontsource/roboto/500.css",
+              "node_modules/@fontsource/roboto/700.css",
+              "node_modules/material-icons/iconfont/material-icons.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "karmaConfig": "karma.conf.js"
           }
         }
       }

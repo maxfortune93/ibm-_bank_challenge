@@ -1,15 +1,25 @@
-.full-width {
-  width: 100%;
-  border-radius: 50px !important;
+.full-width { width: 100%; }
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 12px;
+}
+
+.account-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1.4fr 1fr;
+  gap: 0 12px;
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
-  gap: 25px;
-  margin-top: 16px;
+  gap: 12px;
+  margin-top: 8px;
 }
 
-.button-class{
-  min-width: 120px;
+@media (max-width: 480px) {
+  .row { grid-template-columns: 1fr; }
+  .account-row { grid-template-columns: 1fr 1fr 1fr; }
 }

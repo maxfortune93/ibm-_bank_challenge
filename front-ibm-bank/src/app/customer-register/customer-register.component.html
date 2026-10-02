@@ -1,39 +1,53 @@
 <h2 mat-dialog-title>Cadastro de Cliente</h2>
 <mat-dialog-content>
-  <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" id="customer-form">
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" required>
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" autocomplete="name" required>
+      <mat-error>Informe o nome</mat-error>
     </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Idade</mat-label>
+        <input matInput formControlName="age" type="number" required>
+        <mat-error>Idade entre 0 e 150</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" autocomplete="email" required>
+        <mat-error>Informe um email válido</mat-error>
+      </mat-form-field>
+    </div>
+
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Age</mat-label>
-      <input matInput formControlName="age" type="number" required>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" type="email" required>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Bank Name</mat-label>
+      <mat-label>Banco</mat-label>
       <mat-select formControlName="bank" required>
         <mat-option *ngFor="let bank of banks" [value]="bank.name">{{ bank.name }}</mat-option>
       </mat-select>
+      <mat-error>Selecione o banco</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Branch Number</mat-label>
-      <input matInput formControlName="branchNumber" required>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Account Number</mat-label>
-      <input matInput formControlName="accountNumber" required>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Digit</mat-label>
-      <input matInput formControlName="digit" required>
-    </mat-form-field>
-    <div class="actions">
-      <button class="button-class" color="warn" mat-button mat-dialog-close>Cancelar</button>
-      <button class="button-class" style="background-color: #008080;" mat-button type="submit" [disabled]="!customerForm.valid">Salvar</button>
+
+    <div class="account-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Agência</mat-label>
+        <input matInput formControlName="branchNumber" inputmode="numeric" required>
+        <mat-error>Informe a agência</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Conta</mat-label>
+        <input matInput formControlName="accountNumber" inputmode="numeric" required>
+        <mat-error>Informe a conta</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Dígito</mat-label>
+        <input matInput formControlName="digit" maxlength="1" required>
+        <mat-error>Obrigatório</mat-error>
+      </mat-form-field>
     </div>
   </form>
 </mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" mat-dialog-close>Cancelar</button>
+  <button mat-flat-button color="primary" type="submit" form="customer-form" [disabled]="!customerForm.valid">Salvar</button>
+</mat-dialog-actions>

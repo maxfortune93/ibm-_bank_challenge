@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-search-filter',
@@ -11,8 +13,16 @@ export class SearchFilterComponent {
 
   @Output() searchChanged: EventEmitter<string> = new EventEmitter<string>();
 
+  private readonly search$ = new Subject<string>();
+
+  constructor() {
+    this.search$
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
+      .subscribe(term => this.searchChanged.emit(term));
+  }
+
   onSearchChange() {
-    this.searchChanged.emit(this.searchTerm);
+    this.search$.next(this.searchTerm);
   }
 
 }

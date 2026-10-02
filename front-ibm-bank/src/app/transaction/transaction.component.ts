@@ -149,11 +149,6 @@ export class TransactionComponent {
           } else {
             this.snackbarService.error('Erro inesperado na resposta da API');
           }
-        },
-        error: error => {
-          console.error('Erro ao realizar a transação:', error);
-          const errorMessage = error.error && error.error.message ? error.error.message : 'Erro ao realizar a transação';
-          this.snackbarService.error(errorMessage);
         }
       });
     }
@@ -165,12 +160,8 @@ export class TransactionComponent {
   }
 
   openRegisterModal(): void {
-    const dialogRef = this.dialog.open(CustomerRegisterComponent, {
+    this.dialog.open(CustomerRegisterComponent, {
       width: '500px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.info('Dialog result:', result);
     });
   }
 

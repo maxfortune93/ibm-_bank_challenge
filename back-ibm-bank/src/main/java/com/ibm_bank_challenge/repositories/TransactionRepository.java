@@ -1,6 +1,6 @@
 package com.ibm_bank_challenge.repositories;
 
-import com.ibm_bank_challenge.domain.Transaction.Transaction;
+import com.ibm_bank_challenge.domain.transaction.Transaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,11 +17,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
 
     Page<Transaction> findBySenderIdOrReceiverId(UUID senderId, UUID receiverId, Pageable pageable);
 
-    @Query("SELECT t FROM transactions t WHERE (t.sender.id = :customerId OR t.receiver.id = :customerId) AND t.timestamp BETWEEN :startDate AND :endDate")
-    Page<Transaction> findBySenderIdOrReceiverIdAndTimestampBetween(
+    @Query("SELECT t FROM transactions t WHERE (t.sender.id = :customerId OR t.receiver.id = :customerId) AND t.timestamp >= :start AND t.timestamp < :endExclusive")
+    Page<Transaction> findByCustomerAndPeriod(
             @Param("customerId") UUID customerId,
-            @Param("startDate") LocalDateTime startDate,
-            @Param("endDate") LocalDateTime endDate,
+            @Param("start") LocalDateTime start,
+            @Param("endExclusive") LocalDateTime endExclusive,
             Pageable pageable
     );
 }
