@@ -1,6 +1,27 @@
-# Render Blueprint for the Angular front end (static site, free).
-# The API is a separate Docker web service (back-ibm-bank) deployed by .github/workflows/deploy.yml.
+# Render Blueprint: Spring Boot API (Docker) + Angular front end (static site).
+# The database is NOT created here: point DATABASE_* at your existing Postgres.
 services:
+  # --- API: built from back-ibm-bank/Dockerfile ---
+  - type: web
+    name: ibm-bank-challenge
+    runtime: docker
+    plan: free
+    dockerfilePath: ./back-ibm-bank/Dockerfile
+    dockerContext: ./back-ibm-bank
+    healthCheckPath: /actuator/health
+    # Deployed by .github/workflows/deploy.yml after CI passes (it also syncs the env vars).
+    autoDeploy: false
+    envVars:
+      - key: DATABASE_URL        # jdbc:postgresql://host:5432/db
+        sync: false
+      - key: DATABASE_USERNAME
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        value: http://localhost:4200,https://ibm-bank-front.onrender.com
+
+  # --- Front end: Angular static site ---
   - type: web
     name: ibm-bank-front
     runtime: static
