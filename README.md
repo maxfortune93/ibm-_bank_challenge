@@ -99,3 +99,5 @@ On Render, turn **Auto-Deploy off** for the service so the workflow is the only 
 The site URL is `https://<service-name>.onrender.com` (`https://ibm-bank-front.onrender.com` unless Render adds a suffix because the name is taken). That origin must be allowed by the API's CORS: it is in the default list in `application.properties`, but if the actual URL differs, set the `CORS_ALLOWED_ORIGINS` repository variable (comma separated) so the deploy workflow sends it to the API service.
 
 The API URL used by the production build is in `front-ibm-bank/src/environments/environment.prod.ts`.
+
+The two `vercel.json` files only turn off Vercel's Git deployments (the project moved to Render). To remove Vercel completely, delete the projects in the Vercel dashboard and then those files.
